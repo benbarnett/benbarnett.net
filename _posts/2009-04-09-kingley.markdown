@@ -1,0 +1,28 @@
+---
+layout: post
+title:  Kingley Event Management Solutions
+categories:
+- Case Studies
+---
+
+Kingley Event Management Solutions is a leading event management company specialising in the travel sector. Established in 1988 Kingley have established a reputation of delivering high quality business driven, results orientated events respected by delegates and sponsors alike both at home and overseas.
+
+We were given the opportunity to submit a proposal for their first ever website, as Brushfire was referred to Kingley by an existing client, Tenscare.
+
+The website has the following features:
+
+* Full content management
+* Flash photo galleries
+* Custom e-commerce facility for ordering tickets to their events, including stock control, multiple payment methods, ability to make events invite-only, bulk purchases and user accounts
+* CRM system that integrates with ACT! by Sage
+* Full online management & support of a comprehensive awards scheme, the travel industrys reputable Agent Achievement Awards, which has been running since 1996. This features a nominations phase, a standings phase, a voting phase and a finalists/winners phase. All finalists are invited to a prestigious AAA dinner at the Royal Lancaster Hotel in London where the winners are announced, and the website also manages all the table plans and dietary requirements for this.
+* We took pride in providing a solution that, although complex behind the scenes, was simple to use and manage, even for those new to the web. Taking 5 months to complete, the site is now in it’s 3rd year, and has successfully hosted the Agent Achievement Awards online every year since its launch.
+
+Client Testimonial
+=======
+
+> "We were delighted with the advice and assistance offered to us by Brushfire; this was Kingley Event Managements first ever web site and we were kept very well informed during the whole site construction period.
+
+> Having equally obtained a number of quotes we found Brushfire's pricing to be very competitive; we now use them for other web based projects and would not hesitate in recommending them to other businesses."
+
+Giles Harper - Sales Director
