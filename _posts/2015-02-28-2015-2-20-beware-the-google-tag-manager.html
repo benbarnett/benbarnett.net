@@ -1,0 +1,36 @@
+---
+layout: post
+title: Beware the Google Tag Manager
+categories:
+- Ramblings
+tags:
+- gtm
+- culture
+status: draft
+type: post
+published: false
+meta: {}
+---
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>
+<p>GTM. The equivalent of spending years crafting a rocket to Mars, and then allowing someone to steer it from their Playstation at home.</p>
+
+<p>Worse, they can inject new logic, even rewire the engine itself, whilst the people on the rocket are blissfully unaware they've been re-routed to Jupiter.</p>
+
+<p>The person on the Playstation may well be a genius, but if the people on the rocket aren't told when they've added, say, 'experimental fuel saving measures', things <em>could</em> go bad.</p>
+<hr>
+<p>Yes, it's clever. Yes, you don't need an engineer to update your tracking tags. But the ability to add <strong>huge</strong> lumps of potentially untested functionality that is nowhere near the rest of your codebase, is simply too much (or little) control. It is the WYSIWYG CMS of analytics.</p>
+
+<p>In case you weren't aware (I wasn't), GTM will override all targeted <code>click</code> events in the DOM. It'll kill the original event, do its tracking, and then create a new event from scratch. If GTM is instructed to open links in a new window, it'll kill the <code>click</code> event, open a new <code>about:blank</code> window, and then <code>window.href = ''</code> it to the URL.</p>
+  
+       [caption id="" align="alignnone" width="1904.0"]<img src="/squarespace_images/static_54ca13cfe4b02ee45f6b223f_54ca141be4b005082bd80a5a_54e72e43e4b0bc2e9a8f2ad1_1424436805949_gtmcode.pnggtmcode_" alt="Not actually the code that does the bit I'm talking about but you get the idea"> Not actually the code that does the bit I'm talking about but you get the idea[/caption] 
+  
+
+<p>So if you do any sort of <code>click</code> event stuff yourself, its possible for it to be <code>return false</code>'d and stopped dead in its tracks, should GTM fancy. </p>
+
+<p>This means your links don't work. On production. Because code you don't know about has been back alley'd in.</p>
+
+<h2 id="rant">/rant</h2>
+
+<p>Beware the communication gap! Beware the GTM!</p>
+</body></html>

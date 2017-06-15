@@ -1,0 +1,87 @@
+---
+layout: post
+title: 'Documenting your Component Library: Who''s it for?'
+categories:
+- Ramblings
+tags:
+- components
+- javascript
+- documentation
+status: publish
+type: post
+published: true
+meta: {}
+---
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>
+<p>I was made aware of the impressive looking <a href="http://fbrctr.github.io/">Fabricator</a> from <a href="https://twitter.com/paulrobertlloyd/status/589039347023933440">Paul Lloyd</a> earlier today, but it reminded me of a thought process we went through with <a href="http://www.madewithdough.org.uk/">Dough</a>. Here's Paul's tweet:</p>
+ 
+   <blockquote class="twitter-tweet" lang="en">
+<p>Fabricator (<a href="http://t.co/XWkOvgmom5">http://t.co/XWkOvgmom5</a>) looks like a great tool for component-driven development and documented code (i.e. style guides).</p>— Paul Lloyd (@paulrobertlloyd) <a href="https://twitter.com/paulrobertlloyd/status/589039347023933440">April 17, 2015</a>
+</blockquote>
+ 
+<p>After looking through the tool (which is excellent), it brought up a small but maybe significant point, in that the <a href="http://fbrctr.github.io/demo/docs.html">Javascript documentation lives separately</a>. We initially did the same with <a href="http://www.madewithdough.org.uk/">Dough</a>, but I think it's worth exploring some of the thinking:</p>
+
+<h2 id="whoandwhatareyoudocumentingfor">Who and what are you documenting for?</h2>
+
+<p>This could fall into a couple of categories:</p>
+
+<ol>
+<li>Someone looking to <em>use</em> your components</li>
+<li>Someone looking to <em>contribute</em> to your components</li>
+</ol>
+
+<p>Or, put differently:</p>
+
+<ol>
+<li>Usage instructions</li>
+<li>Design &amp; development instructions</li>
+</ol>
+
+<p>Perhaps even:</p>
+
+<ol>
+<li>Someone working on a new or existing product using these components</li>
+<li>Someone improving or creating a new component, which will then be used on a product</li>
+</ol>
+
+<p>With <a href="http://www.madewithdough.org.uk/">Dough</a>, and pretty much <a href="http://rizzo.lonelyplanet.com/styleguide/design-elements/colours">any</a> <a href="http://ionicframework.com/docs/components/">other</a> component library like this, we obviously want both <em>usage</em> and <em>contribution</em>. </p>
+
+<p>Browsing a well kept component library gives a clear picture of what's available to use, and also highlights areas that are missing or need improving. But we need to remember that our target audience isn't just designers &amp; developers. To get real benefit from the library, the rest of the company should know about it too. It helps people visualise how tools and products are put together, and make better decisions.</p>
+
+<p>For bringing new hires up to speed, encouraging contribution (inside and outside the organisation), consistency, prototyping, it's clear this stuff works.</p>
+
+<h2 id="somescenarios">Some scenarios</h2>
+
+<p><strong>Product designer</strong></p>
+
+<blockquote>
+  <p>I want to see what components are available. I probably don't want to see components filtered by implementation (JS/non-JS). I'm interested in a list and to see how they work on mobile, what they look like, etc. Granted, I might not actually click on the Javascript section, but if that's there, am I even in the right place?</p>
+</blockquote>
+
+<p><strong>Developer</strong></p>
+
+<blockquote>
+  <p>I'll want to browse the library to see what's available. I'm probably already in Github looking through the code. I'll be investigating exactly how these things have been made at a lower level than this set of documentation. I'll eventually want to know how to exactly how to write the code for a new one of these things.</p>
+</blockquote>
+
+<h2 id="whywouldyouseparatejavascriptdocs">Why would you separate Javascript docs?</h2>
+
+<p>As an example, <a href="http://www.madewithdough.org.uk/">Dough</a>, with a tweak or two, follows <a href="https://github.com/moneyadviceservice/javascript">Airbnb's Javascript Styleguide</a> which goes into far more depth than I believe a component library needs.</p>
+
+<p>I'm not sure tacking the above on the end of the component library seems right. How far do you go? It also use helpers written in Ruby on Rails, do these belong here? How about the more general Ruby styleguide?</p>
+
+<p>The documentation could quickly become a behemoth and too general to be useful to everyone who could influence product design.</p>
+
+<p>I'm hoping by this point that you can see how the answer isn't immediately obvious.</p>
+
+<h2 id="ofcoursethereisnorightway">Of course, there is no right way</h2>
+
+<p>Every case will be different, and the scenarios above describe some of the situations in the organisations I've worked in.</p>
+
+<p>To get <em>everyone</em> in the organisation living and breathing your component library, it needs to be useful to <em>everyone</em>. With better awareness, the organisation knows what the library has at its disposal, and can ultimately get more and/or better (choose your metric!) products out there, sooner.</p>
+
+<p>The risks of not getting this stuff right are bigger than they may seem – you can craft the best component library &amp; workflow out there, but if your design and product teams aren't fully in the loop, you'll end up with more inconsistency than you had before.</p>
+
+<p>I think my conclusion to this post is that I prefer to separate implementation documentation from usage documentation. If you've read this far though, you probably already guessed that.</p>
+</body></html>

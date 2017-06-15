@@ -1,0 +1,48 @@
+---
+layout: post
+title: CSS3 Text Effects with Webkit Masking
+categories:
+- Techniques
+tags:
+- css3
+- effects
+- masking
+- webkit
+status: publish
+type: post
+published: true
+meta: {}
+---
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>
+<p>Dead easy but cute little technique this one. I'm working with a design that had an overlay effect over some of the text based headings.</p>
+<p>The way I've seen it done before (and I have in fact done it myself) is to simply stick a PNG with alpha transparency on top of the text in question. Granted, this technique does work but it felt like a bit of a cludge. It also means you can't highlight the text underneath it. Annoying and bad for usability.</p>
+<p>I then cast my mind back to the stunning <a href="http://www.kaleidoscopeapp.com">Kaleidoscope App</a> website. Using a Webkit browser, look closely at the colour wheel triangle thingy and you'll notice it's spinning. Dig deeper in the CSS and you'll see they're using a really nice masking technique to achieve that.</p>
+<p>Simple enough, but I wanted this effect to appear on all browsers rather than just Webkit.</p>
+<h2>Detecting Webkit Masking Support</h2>
+<p>Feature detection is the best way to implement this technique. Rather than just seeing if "browser = Chrome or Webkit", you can either use the <a href="http://www.modernizr.com/">Modernizr</a> library to do this for you, or simply grab the following line of Javascript and insert it above your CSS.</p>
+<pre>document.documentElement.className = document.documentElement.style.WebkitMask!==undefined?"masking":"nomasking";</pre>
+<p>That will add a class of 'masking' to your HTML tag should the feature be supported. And, by including this pre-CSS, you'll get no flickering of content. You can then just add the <em>.masking </em>prefix to styles that use it.</p>
+<h2>Creating the Mask</h2>
+<p>Basic Photoshop skills should be enough to create pretty much any type of mask. The key point to remember is that they're unlike Photoshop masks in that they rely on Alpha transparency rather than black or white.</p>
+<p>Webkit masks require a PNG with an alpha channel, i.e. a 24 or 32 bit PNG.</p>
+<p>Areas of the mask with 0% opacity will hide that section of the element the mask is being applied to. Areas with 100% will render as usual. Then, as you'd expect, you can use anything in-between for partial transparency.</p>
+<p>Here's the mask I'm using. I've dropped it in a green container so you can see where the transparency lies.</p>
+<div style="padding: 4px; background: #0c0; width: 300px;"><img src="/squarespace_images/static_54ca13cfe4b02ee45f6b223f_54ca141be4b005082bd80a5a_54ca141ce4b005082bd80a72_1422529627284_sample-mask.png_" alt="Sample Webkit Mask with PNG-24" title="sample-mask"></div>
+<h2>The CSS</h2>
+<p>This is the easy bit. For non '.masking' browsers, implement the same 'overlay' technique as you've no doubt done before.</p>
+<p>For browsers that do support Webkit Masking, just override the element (for example, an <em>h1</em> tag) to set it.</p>
+<pre>.masking h1 { -webkit-mask-image: url(../img/bg/text-effect-mask.png); }</pre>
+<p>You can then play with the positioning and things should you need to;</p>
+<ul>
+<li>-webkit-mask-position-y</li>
+<li>-webkit-mask-position-x</li>
+<li>-webkit-mask-repeat</li>
+</ul>
+<p>Here's a screenshot of the output.</p>
+<p><a href="http://static1.squarespace.com/static/54ca13cfe4b02ee45f6b223f/54ca141be4b005082bd80a5a/54ca141ce4b005082bd80a75/1422529627608/mask-example.png"><img src="/squarespace_images/static_54ca13cfe4b02ee45f6b223f_54ca141be4b005082bd80a5a_54ca141ce4b005082bd80a75_1422529627608_mask-example.png_" alt="" title="Output of the Webkit Mask example" class="alignnone size-full wp-image-91"></a></p>
+<p>A nice, selectable, accessible, progressively enhanced text overlay effect.</p>
+<h2>Simple right?</h2>
+<p>This is a rudimentary use of the Webkit mask. As you can see from the Made by Sofa guys (creators of Kaleidoscope App), you can create some amazing effects and choose either to implement a technique for non-supporting browsers, or just degrade gracefully to a static version, as they've done.</p>
+<p>You can also use them on pretty much any DOM element there is, as the comments on the <a href="http://webkit.org/blog/181/css-masks/">Surfin' Safari</a> docs explain.</p>
+</body></html>

@@ -1,0 +1,220 @@
+---
+layout: post
+title: Using Ruby on Rails and the Lulu Publication API [UPDATED]
+categories:
+- Ruby on Rails
+- Techniques
+tags:
+- lulu
+- lulu api
+- rails
+- ruby
+- tutorial
+status: publish
+type: post
+published: true
+meta: {}
+---
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>
+<p>In the past week or so I’ve been working on a little side project that is making fairly heavy use of <strong>Lulu</strong> and their new <a href="http://api.lulu.com/publication/" target="_blank">Publication <strong>API</strong></a>. It’s a brilliant system, and although I can’t blame them as the <strong>Lulu</strong> <strong>API</strong> is a new release, the documentation is a little thin. After a bit of poking around their <a href="http://github.com/luluapi" target="_blank">Python example</a> on Github and more into Ruby’s HTTP class, I’ve managed to find a pretty neat and easy to implement method which I’ve written about here.
+To get the communication between your site and the <strong>Lulu</strong> Publication <strong>API</strong> the main libraries we need are;</p>
+<div class="wp_syntax">
+<div class="code">
+<pre class="ruby" style="font-family: monospace;"><span style="color: #cc0066; font-weight: bold;">require</span> <span style="color: #996600;">'net/https'</span>
+<span style="color: #cc0066; font-weight: bold;">require</span> <span style="color: #996600;">'uri'</span>
+<span style="color: #cc0066; font-weight: bold;">require</span> <span style="color: #996600;">'curb'</span></pre>
+</div>
+</div>
+<p>…and 4 URLs, along with the API Key (free to <a href="http://developer.lulu.com/apps/register" target="_blank">create one</a>) which should be defined as constants (perhaps in config/environment.rb);</p>
+<div class="code">
+<pre class="ruby" style="font-family: monospace;">
+LULU_AUTHENTICATE = "https://www.lulu.com/account/endpoints/authenticator.php"
+LULU_UPLOAD_TOKEN = "http://apps.lulu.com/api/publish/v1/request_upload_token"
+LULU_UPLOAD = "https://pubapp.lulu.com/api/publish/v1/upload"
+LULU_PUBLISH = "http://apps.lulu.com/api/publish/v1/create"
+API_KEY = "ABCDEF123" # replace this with your api key
+</pre>
+</div>
+<p><span style="font-family: Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif; line-height: 19px; white-space: normal; font-size: 13px;"><a href="http://curb.rubyforge.org/" target="_blank">Curb</a> is simply a hook into the brilliant cURL utility and can be installed as a gem. It’s used here as it makes it dead easy to do a multipart form post, which is required for the ‘upload’ phase of the integration.</span></p>
+<div class="wp_syntax">
+<div class="code">
+<pre class="ruby" style="font-family: monospace;"><span style="color: #006600; font-weight: bold;">[</span>sudo<span style="color: #006600; font-weight: bold;">]</span> gem install curb</pre>
+</div>
+</div>
+<h2>Step 1 – Obtain your authToken from the <strong>Lulu</strong> <strong>API</strong>
+</h2>
+<p>To use the <strong>Lulu</strong> <strong>API</strong>, all you need is a normal <strong>Lulu</strong> account, which is free. You’ll need those details to get the ‘authToken’ from the <strong>Lulu</strong> <strong>API</strong> which simply authenticates all the requests. We also need to be using <em>https</em> for every call to the <strong>API</strong>. Anyway, here’s the code you need for step 1 (I’ve defined my <em>LULU_AUTH_USER</em> and <em>LULU_AUTH_PASS</em> in config/environment.rb for neatness).</p>
+<div class="wp_syntax">
+<div class="code">
+<pre class="ruby" style="font-family: monospace;"><span style="color: #cc0066; font-weight: bold;">require</span> <span style="color: #996600;">'net/https'</span>
+<span style="color: #cc0066; font-weight: bold;">require</span> <span style="color: #996600;">'uri'</span>
+<span style="color: #cc0066; font-weight: bold;">require</span> <span style="color: #996600;">'curb'</span>
+
+<span style="color: #008000; font-style: italic;"># LULU_AUTHENTICATE WITH <strong>LULU</strong> TO GET OUR auth_token</span>
+url = <span style="color: #cc00ff; font-weight: bold;">URI</span>.<span style="color: #9900cc;">parse</span><span style="color: #006600; font-weight: bold;">(</span>LULU_AUTHENTICATE+'?api_key='+LULU_API_KEY<span style="color: #006600; font-weight: bold;">)</span>
+auth_args = <span style="color: #006600; font-weight: bold;">{</span>
+<span style="color: #996600;">'username'</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> LULU_AUTH_USER,
+<span style="color: #996600;">'password'</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> LULU_AUTH_PASS,
+<span style="color: #996600;">'responseType'</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">'json'</span>
+<span style="color: #006600; font-weight: bold;">}</span>
+
+http = <span style="color: #6666ff; font-weight: bold;">Net::HTTP</span>.<span style="color: #9900cc;">new</span><span style="color: #006600; font-weight: bold;">(</span>url.<span style="color: #9900cc;">host</span>, url.<span style="color: #9900cc;">port</span><span style="color: #006600; font-weight: bold;">)</span>
+http.<span style="color: #9900cc;">use_ssl</span> = <span style="color: #0000ff; font-weight: bold;">true</span>
+request = <span style="color: #6666ff; font-weight: bold;">Net::HTTP::Post</span>.<span style="color: #9900cc;">new</span><span style="color: #006600; font-weight: bold;">(</span>url.<span style="color: #9900cc;">path</span><span style="color: #006600; font-weight: bold;">)</span>
+request.<span style="color: #9900cc;">set_form_data</span><span style="color: #006600; font-weight: bold;">(</span>auth_args<span style="color: #006600; font-weight: bold;">)</span>
+
+response = http.<span style="color: #9900cc;">start</span> <span style="color: #006600; font-weight: bold;">{</span><span style="color: #006600; font-weight: bold;">|</span>http<span style="color: #006600; font-weight: bold;">|</span> http.<span style="color: #9900cc;">request</span><span style="color: #006600; font-weight: bold;">(</span>request<span style="color: #006600; font-weight: bold;">)</span> <span style="color: #006600; font-weight: bold;">}</span>
+json = <span style="color: #6666ff; font-weight: bold;">ActiveSupport::JSON</span>.<span style="color: #9900cc;">decode</span><span style="color: #006600; font-weight: bold;">(</span>response.<span style="color: #9900cc;">body</span><span style="color: #006600; font-weight: bold;">)</span></pre>
+</div>
+</div>
+<p>Now all we need to do is deal with that response. The last line of the code above simply gives us a decoded JSON object, which can be used like this:</p>
+<div class="wp_syntax">
+<div class="code">
+<pre class="ruby" style="font-family: monospace;"><span style="color: #9966cc; font-weight: bold;">if</span> json<span style="color: #006600; font-weight: bold;">[</span><span style="color: #996600;">'authenticated'</span><span style="color: #006600; font-weight: bold;">]</span> == <span style="color: #0000ff; font-weight: bold;">true</span>
+  <span style="color: #008000; font-style: italic;"># we're logged in!</span>
+  auth_token = json<span style="color: #006600; font-weight: bold;">[</span><span style="color: #996600;">'authToken'</span><span style="color: #006600; font-weight: bold;">]</span>
+<span style="color: #9966cc; font-weight: bold;">else</span>
+ <span style="color: #008000; font-style: italic;"># something went wrong, let's review what came back and try again</span>
+ <span style="color: #cc0066; font-weight: bold;">puts</span> response.<span style="color: #9900cc;">body</span>
+<span style="color: #9966cc; font-weight: bold;">end</span></pre>
+</div>
+</div>
+<h2>Step 2 – Upload the PDFs</h2>
+<p>This bit probably took me the longest to work out, but as I mentioned earlier, the <a href="http://curb.rubyforge.org/" target="_blank">Curb gem</a> came to the rescue. Make sure you’ve installed that and then we can form a new request to send our cover PDF and the book PDF. Remember that this will only work if you’ve successfully received an <em>authToken</em> from the authentication stage of the <strong>Lulu</strong> <strong>API</strong>.</p>
+<p><strong>UPDATE: Since June 2010, you now need to request an Upload Token before being able to upload files:-</strong></p>
+<div class="code">
+<pre class="ruby">url = URI.parse(LULU_UPLOAD_TOKEN+'?api_key='+LULU_API_KEY)
+
+publish_args = {
+  'auth_user' =&gt; LULU_AUTH_USER,
+  'auth_token' =&gt; auth_token,
+  'api_key' =&gt; LULU_API_KEY
+}
+http = Net::HTTP.new(url.host, url.port)
+request = Net::HTTP::Post.new(url.path)
+request.set_form_data(publish_args)
+
+response = http.start {|http| http.request(request) }
+responsebody = response.body.gsub("'", "\"") # Sadly our JSON parser won't work unless we do this (single quotes aren't <a href="http://www.jsonlint.com/" target="_blank">valid JSON</a>)
+
+tokendata = ActiveSupport::JSON.decode(responsebody)</pre>
+</div>
+<p><strong>
+</strong></p>
+<div class="wp_syntax">
+<div class="code">
+<pre class="ruby" style="font-family: monospace;"><span style="color: #008000; font-style: italic;"># LULU_UPLOAD THEM</span>
+pdf_cover = <span style="color: #996600;">"/tmp/cover.pdf"</span>
+pdf_book = <span style="color: #996600;">"/tmp/book.pdf"</span>
+
+c = <span style="color: #6666ff; font-weight: bold;">Curl::Easy</span>.<span style="color: #9900cc;">new</span><span style="color: #006600; font-weight: bold;">(</span>LULU_UPLOAD<span style="color: #006600; font-weight: bold;">)</span>
+c.<span style="color: #9900cc;">multipart_form_post</span> = <span style="color: #0000ff; font-weight: bold;">true</span>
+c.<span style="color: #9900cc;">http_post</span><span style="color: #006600; font-weight: bold;">(</span>
+       <span style="color: #6666ff; font-weight: bold;">Curl::PostField</span>.<span style="color: #9900cc;">content</span><span style="color: #006600; font-weight: bold;">(</span><span style="color: #996600;">'auth_user'</span>, LULU_AUTH_USER.<span style="color: #9900cc;">to_s</span><span style="color: #006600; font-weight: bold;">)</span>,
+       <span style="color: #6666ff; font-weight: bold;">Curl::PostField</span>.<span style="color: #9900cc;">content</span><span style="color: #006600; font-weight: bold;">(</span><span style="color: #996600;">'auth_token'</span>, auth_token.<span style="color: #9900cc;">to_s</span><span style="color: #006600; font-weight: bold;">)</span>,
+<span style="color: #6666ff; font-weight: bold;">       Curl::PostField</span>.<span style="color: #9900cc;">content</span><span style="color: #006600; font-weight: bold;">(</span><span style="color: #996600;">'api_key'</span>, LULU_API_KEY<span style="color: #006600; font-weight: bold;">)</span>, <em># note the new API key being sent across</em>
+<span style="color: #6666ff; font-weight: bold;">       Curl::PostField</span>.<span style="color: #9900cc;">content</span><span style="color: #006600; font-weight: bold;">(</span><span style="color: #996600;">'upload_token'</span>, tokendata['token'].<span style="color: #9900cc;">to_s</span><span style="color: #006600; font-weight: bold;">)</span>, <em># add our upload_token to the post fields</em>
+       <span style="color: #6666ff; font-weight: bold;">Curl::PostField</span>.<span style="color: #9900cc;">file</span><span style="color: #006600; font-weight: bold;">(</span><span style="color: #996600;">'cover'</span>, pdf_cover<span style="color: #006600; font-weight: bold;">)</span>,
+       <span style="color: #6666ff; font-weight: bold;">Curl::PostField</span>.<span style="color: #9900cc;">file</span><span style="color: #006600; font-weight: bold;">(</span><span style="color: #996600;">'book'</span>, pdf_book<span style="color: #006600; font-weight: bold;">)</span>     <span style="color: #006600; font-weight: bold;">)</span>
+
+json = <span style="color: #6666ff; font-weight: bold;">ActiveSupport::JSON</span>.<span style="color: #9900cc;">decode</span><span style="color: #006600; font-weight: bold;">(</span>c.<span style="color: #9900cc;">body_str</span><span style="color: #006600; font-weight: bold;">)</span>
+
+<span style="color: #9966cc; font-weight: bold;">if</span> json<span style="color: #006600; font-weight: bold;">[</span><span style="color: #996600;">'written_files'</span><span style="color: #006600; font-weight: bold;">]</span>
+  <span style="color: #008000; font-style: italic;"># the files were uploaded!</span>
+  ... <span style="color: #9900cc;">business</span> logic here ...
+<span style="color: #9966cc; font-weight: bold;">else</span>
+  <span style="color: #008000; font-style: italic;"># something went wrong, review the output below</span>
+  <span style="color: #cc0066; font-weight: bold;">puts</span> c.<span style="color: #9900cc;">body_str</span>
+<span style="color: #9966cc; font-weight: bold;">end</span></pre>
+</div>
+</div>
+<p>It really is as simple as that! Now all we need to do is send the fairly large (but still, easy to interpret) JSON data structure to the final stage of the <strong>Lulu</strong> <strong>API</strong>.</p>
+<h2>Step 3 – Send Publish Data to <strong>Lulu</strong> Publication <strong>API</strong>
+</h2>
+<p>So this will probably look like the most complicated part, but it’s simply where we configure exactly what sort of book we want; meaning the size, paper/hardback, quality, availability etc etc. Let’s get straight into the data structure.</p>
+<div class="wp_syntax">
+<div class="code">
+<pre class="ruby" style="font-family: monospace;">create_input =
+<span style="color: #006600; font-weight: bold;">{</span>
+  <span style="color: #996600;">"allow_ratings"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #0000ff; font-weight: bold;">true</span>,
+  <span style="color: #996600;">"project_type"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"hardcover"</span>,
+  <span style="color: #996600;">"access"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"direct"</span>,
+
+  <span style="color: #996600;">"bibliography"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span>
+  <span style="color: #006600; font-weight: bold;">{</span>
+    <span style="color: #996600;">"title"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"My First Book"</span>,
+    <span style="color: #996600;">"authors"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #006600; font-weight: bold;">[</span>
+      <span style="color: #006600; font-weight: bold;">{</span>
+        <span style="color: #996600;">"first_name"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"Ben"</span>,
+        <span style="color: #996600;">"last_name"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"Barnett"</span>
+      <span style="color: #006600; font-weight: bold;">}</span>
+    <span style="color: #006600; font-weight: bold;">]</span>,
+    <span style="color: #996600;">"category"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #006666;">4</span>,
+    <span style="color: #996600;">"description"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"What a fabulous book!"</span>,
+    <span style="color: #996600;">"copyright_year"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"2010"</span>,
+    <span style="color: #996600;">"publisher"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"Brushfire Design Ltd"</span>,
+    <span style="color: #996600;">"language"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"EN"</span>,
+    <span style="color: #996600;">"country_code"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"GB"</span>
+
+  <span style="color: #006600; font-weight: bold;">}</span>,
+
+  <span style="color: #996600;">"physical_attributes"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span>
+  <span style="color: #006600; font-weight: bold;">{</span>
+    <span style="color: #996600;">"binding_type"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"casewrap-hardcover"</span>,
+    <span style="color: #996600;">"trim_size"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"SIZE_825x1075"</span>,
+    <span style="color: #996600;">"paper_type"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"regular"</span>,
+    <span style="color: #996600;">"color"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"true"</span>
+  <span style="color: #006600; font-weight: bold;">}</span>,
+
+  <span style="color: #996600;">"pricing"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span>
+  <span style="color: #006600; font-weight: bold;">[</span>
+      <span style="color: #006600; font-weight: bold;">{</span>
+        <span style="color: #996600;">"product"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"print"</span>,
+        <span style="color: #996600;">"currency_code"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"GBP"</span>,
+        <span style="color: #996600;">"total_price"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"34.99"</span>
+      <span style="color: #006600; font-weight: bold;">}</span>
+  <span style="color: #006600; font-weight: bold;">]</span>,
+
+  <span style="color: #996600;">"file_info"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span>
+  <span style="color: #006600; font-weight: bold;">{</span>
+    <span style="color: #996600;">"cover"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #006600; font-weight: bold;">[</span><span style="color: #006600; font-weight: bold;">{</span><span style="color: #996600;">"mimetype"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"application/pdf"</span>, <span style="color: #996600;">"filename"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"cover.pdf"</span><span style="color: #006600; font-weight: bold;">}</span><span style="color: #006600; font-weight: bold;">]</span>,
+    <span style="color: #996600;">"contents"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #006600; font-weight: bold;">[</span><span style="color: #006600; font-weight: bold;">{</span><span style="color: #996600;">"mimetype"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"application/pdf"</span>, <span style="color: #996600;">"filename"</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> <span style="color: #996600;">"book.pdf"</span><span style="color: #006600; font-weight: bold;">}</span><span style="color: #006600; font-weight: bold;">]</span>
+  <span style="color: #006600; font-weight: bold;">}</span>
+<span style="color: #006600; font-weight: bold;">}</span></pre>
+</div>
+</div>
+<p>The only couple of bits to really worry about are to ensure that you provide just the name of your PDFs, i.e. not the full path (mine were /tmp/cover.pdf) and to set the access type. Supported access levels are ‘private’, ‘public’ (available through search/browse), and ‘direct’.</p>
+<p>Hopefully the above layout makes it clear how the JSON will be structured. Obviously at this stage we have a standard Object in Ruby, which we need to convert to a JSON and then send to the Publication <strong>API</strong>:</p>
+<div class="wp_syntax">
+<div class="code">
+<pre class="ruby" style="font-family: monospace;">url = <span style="color: #cc00ff; font-weight: bold;">URI</span>.<span style="color: #9900cc;">parse</span><span style="color: #006600; font-weight: bold;">(</span>LULU_PUBLISH<span style="color: #006600; font-weight: bold;">)</span>
+publish_args = <span style="color: #006600; font-weight: bold;">{</span>
+  <span style="color: #996600;">'auth_user'</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> LULU_AUTH_USER,
+  <span style="color: #996600;">'auth_token'</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> auth_token,
+  <span style="color: #996600;">'project'</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> create_input.<span style="color: #9900cc;">to_json,
+<span style="color: #000000;"><span style="color: #996600;">  'api_key'</span> <span style="color: #006600; font-weight: bold;">=&gt;</span> LULU_API_KEY <em># note the new API key being sent across</em></span></span>
+<span style="color: #006600; font-weight: bold;">}</span>
+
+http = <span style="color: #6666ff; font-weight: bold;">Net::HTTP</span>.<span style="color: #9900cc;">new</span><span style="color: #006600; font-weight: bold;">(</span>url.<span style="color: #9900cc;">host</span>, url.<span style="color: #9900cc;">port</span><span style="color: #006600; font-weight: bold;">)</span>
+http.<span style="color: #9900cc;">use_ssl</span> = <span style="color: #0000ff; font-weight: bold;">true</span>
+request = <span style="color: #6666ff; font-weight: bold;">Net::HTTP::Post</span>.<span style="color: #9900cc;">new</span><span style="color: #006600; font-weight: bold;">(</span>url.<span style="color: #9900cc;">path</span><span style="color: #006600; font-weight: bold;">)</span>
+request.<span style="color: #9900cc;">set_form_data</span><span style="color: #006600; font-weight: bold;">(</span>publish_args<span style="color: #006600; font-weight: bold;">)</span>
+
+response = http.<span style="color: #9900cc;">start</span> <span style="color: #006600; font-weight: bold;">{</span><span style="color: #006600; font-weight: bold;">|</span>http<span style="color: #006600; font-weight: bold;">|</span> http.<span style="color: #9900cc;">request</span><span style="color: #006600; font-weight: bold;">(</span>request<span style="color: #006600; font-weight: bold;">)</span> <span style="color: #006600; font-weight: bold;">}</span>
+
+json = <span style="color: #6666ff; font-weight: bold;">ActiveSupport::JSON</span>.<span style="color: #9900cc;">decode</span><span style="color: #006600; font-weight: bold;">(</span>response.<span style="color: #9900cc;">body</span><span style="color: #006600; font-weight: bold;">)</span>
+
+<span style="color: #9966cc; font-weight: bold;">if</span> json<span style="color: #006600; font-weight: bold;">[</span><span style="color: #996600;">'content_id'</span><span style="color: #006600; font-weight: bold;">]</span>
+  <span style="color: #008000; font-style: italic;"># we have a book!</span>
+  ... <span style="color: #9900cc;">store</span> the json<span style="color: #006600; font-weight: bold;">[</span><span style="color: #996600;">'content_id'</span><span style="color: #006600; font-weight: bold;">]</span> <span style="color: #9966cc; font-weight: bold;">for</span> reference
+<span style="color: #9966cc; font-weight: bold;">else</span>
+  <span style="color: #008000; font-style: italic;"># something went wrong</span>
+  ... <span style="color: #9900cc;">review</span> output <span style="color: #9966cc; font-weight: bold;">in</span> response.<span style="color: #9900cc;">body</span>
+<span style="color: #9966cc; font-weight: bold;">end</span></pre>
+</div>
+</div>
+<h2>That’s it!</h2>
+<p>It may look like a lot of code above, but that really is all there is to it. I found the last stage quite fiddly, but it was more to do in terms of getting my PDF to the right DPI and exact sizes etc. You can find some sample PDFs from <a href="http://www.lulu.com/publish/books/?cid=nav_bks" target="_blank">Lulu’s Book Specifications</a> (at the bottom of the page).</p>
+<p>Feel free to get in touch if you need any more help getting up and running.</p>
+</body></html>

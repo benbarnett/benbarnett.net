@@ -1,0 +1,50 @@
+---
+layout: post
+title: Enhancing jQuery's animate function to automatically use CSS3 transitions
+categories:
+- Techniques
+tags:
+- animation
+- css3
+- jquery
+- transform
+- transition
+status: publish
+type: post
+published: true
+meta: {}
+---
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>
+<p>On a client project recently, we've been working with some heavy full page transitions, which can look <em>extra</em> lovely when on hardware accelerated browsers and devices. I was struggling to find a neat way to write the front-end code, which is using jQuery, to degrade and enhance itself automatically without putting switch statements and creating multiple stylesheets all over the place.
+This is where my <a href="http://playground.benbarnett.net/jquery-animate-enhanced/">jquery-animate-enhanced</a> plugin comes in. The idea was to have a one hundred percent seamless integration, and backwards compatibility with older browsers. For this reason, it just extends $.animate() which we all know and love and detects if you're trying to animate something that would be better off done with a CSS3 transition. Absolutely zero effort required.</p>
+<h2>The plugin.</h2>
+<h1><strong>Extend $.animate() to detect CSS transitions for Webkit, Mozilla and Opera and convert animations automatically. Compatible with IE6+</strong></h1>
+<h3>Properties supported: (more to come)</h3>
+<ul>
+<li>left : using <em>translate(x, y) or translate3d(x, y, z)</em>
+</li>
+<li>top : using <em>translate(x, y) or translate3d(x, y, z)</em>
+</li>
+<li>opacity</li>
+</ul>
+<p>Note that any properties not mentioned above will simply be handled by the standard jQuery $.animate() method. This plugin adds new functionality without taking any away.</p>
+<h2>Demo</h2>
+<div id="target">
+<p>Check out a working demo on the <a href="http://playground.benbarnett.net/jquery-animate-enhanced/">plugin's homepage</a>.</p>
+</div>
+<h2>What it does</h2>
+<p>The plugin will analyse the properties you're animating on, and select the most appropriate method for the browser in use. This means your transitions on <strong>left, top and opacity</strong> will convert to a <strong>CSS3 transition</strong> on Webkit &amp; Mozilla agents that support it, and Opera 10.50+. If the user is on a browser that has no CSS3 transitions, this plugin knows about it and won't get involved. Silent degradation :)</p>
+<p>Multiple callback mechanisms are created internally to monitor for DOM manipulation and for all '<strong>transitionend</strong>' CSS3 events to be picked up. This means you have one neat callback() for the whole animation regardless on whether the plugin is using CSS3, DOM, or both for its animations.</p>
+<p>Progressively enhanced CSS3 animations without having to do any browser detection or special CSS, therefore using the same Javascript across your applications and websites.</p>
+<p>As this plugin uses CSS3 translate where available, there is an internal callback mechanism to reset the 'left' and/or 'top' properties so that your layout is unaffected.</p>
+<h2>Usage</h2>
+<p>Usage is identical to the <a href="http://api.jquery.com/animate/">jQuery animate() function</a>, but it comes with 3 new paramaters, which are totally optional and safe to leave untouched for general use:</p>
+<ul>
+<li> <strong>avoidTransforms</strong>: (Boolean)By default the plugin will convert left and top animations to the CSS3 style -webkit-transform (or equivalent) to aid hardware acceleration. This functionality can be disabled by setting this to true.</li>
+<li> <strong>useTranslate3d</strong>: (Boolean)By default the plugin will use 2d translations due to wider browser support. Set this to true to use translate3d instead. Recommended for iPhone/iPad development (<a href="/blog/2010/08/30/writing-html-and-css-for-mobile-safari-just-the-same-old-code">here's why</a>).</li>
+<li> <strong>leaveTransforms</strong>: (Boolean)By default if the plugin is animating a left or a top property, the translate (2d or 3d depending on setting above) CSS3 transformation will be used. To preserve other layout dependencies, once the transition is complete, these transitions are removed and converted back to the real left and top values. Set this to <strong>true</strong> to skip this functionality.</li>
+</ul>
+<h2>Give it a go</h2>
+<p>More information is available either on the <a href="http://github.com/benbarnett/jQuery-Animate-Enhanced">GitHub repository</a>, or on the <a href="http://playground.benbarnett.net/jquery-animate-enhanced/">plugin homepage</a>. Thoughts very much welcome.</p>
+</body></html>

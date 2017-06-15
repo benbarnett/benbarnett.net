@@ -1,0 +1,47 @@
+---
+layout: post
+title: Making with Dough
+categories: []
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  structured_content: '{"oembed":{},"overlay":true}'
+---
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>
+<p>Over the last year, the Money Advice Service has been putting together a reusable component library for use on our site. It’s called <a href="http://github.com/moneyadviceservice/dough">Dough</a> and it’s now powering nearly all of the common UI elements across a suite of around twenty five tools, calculators and websites.  It’s completely open source and available for you to use too.</p>
+<p>Dough is a collection of server side helpers that generate markup. Simple yet powerful – there is a single copy of the HTML for documentation, tests and live implementation. Change once, change everywhere.</p>
+<h3>Styling</h3>
+<p>These bits of markup are then styled, initially by <a href="https://github.com/moneyadviceservice/dough/tree/master/assets/stylesheets">Dough’s base CSS</a>, and then by a <a href="https://github.com/moneyadviceservice/frontend/tree/master/app/assets/stylesheets/components/dough_theme" target="_blank">‘theme’ layer</a>. We chose themes for a couple of reasons;</p>
+<ol>
+<li>We’re open source, and themes make Dough easily fit any design style</li>
+<li>We have a couple of visual styles at the Money Advice Service – the <a href="http://www.moneyadviceservice.org.uk">main site</a>, and the <a href="http://blog.moneyadviceservice.org.uk">blog</a> and so each have their own ‘theme’ for Dough</li>
+</ol>
+<h3>Accessibility</h3>
+<p>We’re a public organisation and reaching the widest number of users is a major priority. Our components are fully tested in house and with our partner agency, <a href="http://www.digitalaccessibilitycentre.org/">Digital Accessibility Centre</a>.</p>
+<p>We believe this makes our component library pretty unique and goes the extra mile in making our tools as wide reaching as possible.</p>
+<h3>Interactions</h3>
+<p>Where necessary, these components are then enhanced with unobtrusive JavaScript. There’s no special treatment for this – each bit of component markup is simply stamped with a data attribute that our JavaScript will then target. For example:</p>
+<pre><code>&lt;p class="component" data-dough-component="Tooltip"&gt;
+  &lt;p&gt;Tooltip text goes in here&lt;/p&gt;
+&lt;/p&gt;
+</code></pre>
+<p>All pages include the small <a href="https://github.com/moneyadviceservice/dough/blob/master/assets/js/lib/componentLoader.js">ComponentLoader.js</a> file which will scan the DOM for all Dough components. It’ll then go and fetch the relevant JavaScript (with <a href="http://requirejs.org/">requireJS</a>) for those components that need it, and boot them all up with a promise (polyfilled by <a href="https://github.com/tildeio/rsvp.js/">RSVP.js</a>) that components can resolve or reject. We do this to ensure that the state of the components is centralised.</p>
+<p>There’s also a <a href="https://github.com/moneyadviceservice/dough/blob/master/assets/js/components/DoughBaseComponent.js">common interface</a> from which all components inherit to ensure consistency in code and behaviour.</p>
+<h3>Confidence</h3>
+<p>All components have JavaScript <a href="https://github.com/moneyadviceservice/dough/tree/master/spec/js">tests</a> written in <a href="http://mochajs.org/">Mocha</a> and <a href="http://chaijs.com/">Chai</a>, run in <a href="http://phantomjs.org/">PhantomJS</a> by <a href="http://karma-runner.github.io/0.12/index.html">Karma</a> (our preferred test runner.) There’s a few other plugins in there which you can see in the <a href="https://github.com/moneyadviceservice/dough/blob/master/package.json#L23-L44">package.json</a>, but that’s all there is to it.</p>
+<p>For the Rails-based helpers there is a solid RSpec suite of tests to ensure the inner workings of Dough are behaving as they should.</p>
+<p>Alongside automated testing, <i>knowing</i> that we’re working with the same markup everywhere gives us assurance that things are going to be consistent. Confidence also brings flexibility – everything running from the same markup means we can iterate quickly and see the affects reach across the entire suite of tools.</p>
+<h3>In the real world</h3>
+<p>We’ve just launched our <a title="Retirement Advsier Directory Signup" href="https://radsignup.moneyadviceservice.org.uk/" target="_blank">Retirement Adviser Directory</a> which makes heavy use of Dough (mostly it’s form helpers.) These will generate our preferred markup for form elements, and handle our style of validation.</p>
+<p>Aside from working out what to ask the user, using Dough meant we no longer needed to spend time thinking about how much space should be between fields, how wide they should be, what the focus state should look like, how validation should work, etc.</p>
+<h3>What’s next</h3>
+<p>Dough targets Ruby on Rails as that’s what our tools are built in, but we’re interested in making this more agnostic.</p>
+<p>Obviously this isn’t a golden hammer. It’s not going to make our projects so trivial that we barely need designers and developers. It allows us to focus on the bigger problems we’re trying to solve. We believe that time is better spent working on how we can provide value to the users we’re aiming for, rather than designing a submit button every time a new project starts. With Dough, you can prototype with production code, which means we get ideas out to users sooner and iterate faster.</p>
+<p>We’re working on a front-end for Dough – “<a href="http://www.madewithdough.org.uk/">Made with Dough</a>” – which we hope will be a resource for how to get started, how to contribute and all other things Dough.</p>
+<p><strong><em>[This was written for the <a href="http://making.moneyadviceservice.org.uk/">Making Money Advice Service blog</a>, and has been cross posted here.]</em></strong></p>
+
+<hr>
+</body></html>

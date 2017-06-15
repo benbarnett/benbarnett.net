@@ -1,0 +1,49 @@
+---
+layout: post
+title: Writing HTML and CSS for Mobile Safari. Just the same old code?
+categories:
+- Ramblings
+- Techniques
+tags:
+- css3
+- html5
+- ipad
+- iphone
+- webkit
+status: publish
+type: post
+published: true
+meta: {}
+---
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>
+<p>The answer is "kind of".
+I'm a believer of the "write once, deploy anywhere" attitude. I'm also a big fan of things like <a href="http://whitherapps.com/">WhitherApps</a>; James has done a great job taking the (native) BBC News app and rebuilding it using just HTML and CSS to prove out this very concept.</p>
+<p>BUT... people would be lying if they told you it's exactly the same as writing CSS for desktop browsers. It just isn't.</p>
+<h2>No support for the CSS fixed position</h2>
+<p>You could be forgiven for thinking that it just reverts back to <em>absolute </em>positioning like it does in IE6, but in fact it is not same as <em>explicitly</em> setting an element to absolute. The behaviour is subtly different, and I found that running any CSS3 style webkit transitions were much more performant, and less 'flickery' on an element with fixed position, over one with absolute even though the layout was identical.</p>
+<p>Very strange considering there's <a href="http://ajaxian.com/archives/a-better-mobile-web-what-else">no support for fixed position</a>. Couldn't find that one in the specs anywhere either, so I remain baffled. My solution was to try both position attributes and see which performs better.</p>
+<p>Usually though, <a href="http://cubiq.org/iscroll">Cubiq's iScroll</a> will do the trick as it's more than likely the reason for needing fixed positioning anyway. That plugin genuinely works well by the way. Use it.</p>
+<h2>Hardware accelerated CSS transformations... but are they, really?</h2>
+<p>This one took me a good few hours to work out when I could have been quite happily doing far <a href="http://sphotos.ak.fbcdn.net/hphotos-ak-ash2/hs084.ash2/37520_654331589952_286100624_8390763_4183378_n.jpg">more productive</a> things with my day. I knew already that the '-webkit-transform' and 'opacity' attributes were hardware accelerated for webkit transitions. If you're experiencing a flicker with css3 transitions, this is how to fix it.</p>
+<p>It is true that opacity is hardware accelerated. It is also true that -webkit-transform is hardware accelerated, but, if you're using translateX, translateY or translateZ, you don't get that luxury. Take a typical CSS transition;</p>
+<pre>#element {
+    -webkit-transition: -webkit-transform 1s linear;
+    -webkit-transform: translateX(0);
+}</pre>
+<pre>#element.transformed {
+    -webkit-transform: translateX(300px);
+}</pre>
+<p>In any webkit browser, you'll get whatever #element is to move 300 pixels to the right, in a linear 1 second animation. On Mobile Safari, it will likely 'flicker' before/during/after the transition. The key is to use <strong>translate3d(x, y, z). </strong>The simple change shown below makes all the difference.</p>
+<pre>#element.transformed {
+    <strong>-webkit-transform: translate3d(300px, 0, 0);</strong>
+}</pre>
+<p>It's ridiculously simple, but honestly why would that be hardware accelerated and not the shorter hand, translateX property?</p>
+<h2>Avoid Javascript Libraries</h2>
+<p>You'll notice that the Javascript engine on the iPhone is incredibly slow. The iPad is greatly improved but its still advisable to minimise Javascript, particularly for things like animations. Always use a <em>translate</em> transition over animating the <em>left</em> or <em>top</em> properties. The CSS3 transitions are perfectly smooth and look great. Arguably you don't need jQuery for mobile apps as a lot of 'weight' comes from dealing with cross browser differences; obviously not being an issue if we're focussing solely on mobile webkit. With the new CSS selector engine, document.querySelectorAll(); you still get lightening fast 'jQuery style' DOM selections. Time to brush off the raw Javascript skills (or just be lazy and wait for <a href="http://jquerymobile.com/">jQuery mobile</a>).</p>
+<h2>Am I being impatient?</h2>
+<p>There's only a handful of cases that have proved to be quite time consuming during development, but the point here is a bigger one.</p>
+<p>The whole idea of unifying standards across all devices is the way forward. The thing is though that I can't help feeling that we're harking back to the "Are you using Netscape or Internet Explorer?" days. I wish we didn't have to know about these tricks. It means that without position fixed, we need to use (and write) Javascript extensions to help us out, but then we add weight and potential bugs to the desktop side of things. Do we really have to start detecting whether we're on an iPad and serve up specialised code? What about sites that we wrote before all this came about?</p>
+<p>I'm still behind the idea of using HTML powered apps with simple Objective-C wrappers to encase everything into a native application. With a bit of reading up, and more than one or two stabs in the dark, its definitely not impossible to make an HTML driven app "feel" just as native as any other.</p>
+<p>I guess one just has to accept that the concept of using <em>exactly</em> the same code on mobile and desktop devices still isn't quite there.</p>
+</body></html>

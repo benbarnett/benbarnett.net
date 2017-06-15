@@ -1,0 +1,27 @@
+---
+layout: post
+title: Using HTML5 Canvas for Image Masks
+categories:
+- Techniques
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>
+<p>Recently I've found myself referring to <a href="http://twitter.com/jaffathecake">Jake</a>'s (the <span style="text-decoration: line-through;">bastard</span> legend that is) <a href="http://jakearchibald.com/scratch/alphavid/">HTML5 Video with alpha transparency</a> demo for reference into some pixel manipulation techniques with Canvas. Used in a slightly different context, but largely the same technique, we can use Canvas to apply a full alpha mask to any image element.
+<a href="http://static1.squarespace.com/static/54ca13cfe4b02ee45f6b223f/54ca141be4b005082bd80a5a/54ca141ce4b005082bd80a7b/1422529627887/canvasmask.jpg"><img src="/squarespace_images/static_54ca13cfe4b02ee45f6b223f_54ca141be4b005082bd80a5a_54ca141ce4b005082bd80a7b_1422529627887_canvasmask.jpg_" alt="" title="canvasmask" class="alignnone size-full wp-image-134"></a></p>
+<p>For Webkit browsers, a similar effect can be used with <a href="http://www.webkit.org/blog/181/css-masks/">CSS Masks</a>, but perhaps you need slightly wider browser support, or you want to use the masked image in Canvas somewhere else.</p>
+<p>This function is just a base and should really be tailored to your use case, but it shows how easy it is to read the <em>alpha</em> data from one image, and apply it to another. Using <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#dom-context-2d-getimagedata">getImageData</a>, a 4-chunk <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#canvaspixelarray">CanvasPixelArray</a> is returned with each pixels' R, G, B, and A values. The result is achieved reading and 'merging' the RGB values from the base image, and the A values from the mask.</p>
+<p>That's all it does, but having it wrapped up into a single function is sometimes easier to work with (again, depending on your use case). The function creates a couple of Canvas elements on the DOM and uses them to mash the pixels together. You just pass in the base and mask images, and get back the single masked image either as a CanvasPixelArray, or as a Base-64 encoded data URL.</p>
+<p>To give you an idea of what the images can be, here are the raw images I'm using for the <a href="http://playground.benbarnett.net/canvas-mask/">utterly useless demo</a>.</p>
+<ul>
+<li>Base JPEG: <a href="http://playground.benbarnett.net/canvas-mask/img/octagon.jpg">http://playground.benbarnett.net/canvas-mask/img/octagon.jpg</a>
+</li>
+<li>Mask PNG-24: <a href="http://playground.benbarnett.net/canvas-mask/img/alpha.png">http://playground.benbarnett.net/canvas-mask/img/alpha.png</a>
+</li>
+</ul>
+<p>Feel free to head over to the <a href="https://github.com/benbarnett/Canvas-Mask">Github repo</a> for further docs.</p>
+</body></html>
