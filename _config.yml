@@ -22,7 +22,7 @@ url: "https://benbarnett.net" # the base hostname & protocol for your site, e.g.
 twitter_username: benpbarnett
 github_username:  benbarnett
 google_analytics: UA-8825585-2
-
+permalink: /:year/:month/:day/:title
 
 # Build settings
 markdown: kramdown
