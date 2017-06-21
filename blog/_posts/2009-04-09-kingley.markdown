@@ -2,7 +2,7 @@
 layout: post
 title:  Kingley Event Management Solutions
 categories:
-- Case Studies
+- Projects
 ---
 
 Kingley Event Management Solutions is a leading event management company specialising in the travel sector. Established in 1988 Kingley have established a reputation of delivering high quality business driven, results orientated events respected by delegates and sponsors alike both at home and overseas.
