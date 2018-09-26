@@ -31,4 +31,5 @@ And so here they are, for any budding triathletes¹ like I was:
 - having a triathlon watch (I have a Garmin), syncing to Strava and thus breaking things down into small segments that you can work on is a huge motivator
 
 
-¹ yes, I now never not refer to myself as a 'triathlete'
+
+¹ yes, I now only refer to myself as a 'triathlete'
