@@ -12,7 +12,7 @@ I started training in April this year. I have shed north of 20kg through healthy
 
 It has inspired me to enter the [Leicester Half Marathon](http://leicestermarathon.org.uk/) in October, and the half Iron distance [Cotswold 113 triathlon](https://www.113events.com/cotswold-113/) in June 2019.
 
-The training has got to a stage now where I genuinely enjoy doing it and long may that continue. I particularly enjoyed the variety of the training – if you were tired from one discipline, often one of the others will still be very doable. I found I could cram in 5 activities a week.
+The training has got to a stage now where I genuinely enjoy doing it and long may that continue. I particularly enjoyed the variety – if you were tired from one discipline, often one of the others was still doable. I found I could cram in five activities per week.
 
 I gratefully received many tips from more seasoned triathletes along the way. I am under no illusion that without these, I may have run out of steam and almost definitely not enjoyed it as much as I did.
 
