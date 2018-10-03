@@ -26,8 +26,8 @@ permalink: /blog/:year/:month/:day/:title
 
 # Build settings
 markdown: kramdown
-theme: jekyll-theme-cayman
-gems:
+theme: jekyll-theme-slate
+plugins:
   - jekyll-feed
 exclude:
   - Gemfile
