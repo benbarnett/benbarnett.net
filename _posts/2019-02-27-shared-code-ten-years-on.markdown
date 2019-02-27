@@ -52,7 +52,7 @@ Working towards consistency from a shared codebase can appear to slow things dow
 
 The efficiency of writing once & deploying everywhere comes after the team coordination dance has been done. The key is getting past that point. The first phase is high cost, low (apparent) output.
 
-Generally, I think we help team coordination by taking another look at product ownership. Slicing ownership by page doesn’t always cut it, and owning features without the context of the pages they live on isn’t always better. We have guilds for cross-cutting concerns, but we can go further.
+Generally, I think we can help team coordination by taking another look at product ownership. Slicing ownership by page doesn’t always cut it, and owning features without the context of the pages they live on isn’t always better. We have guilds for cross-cutting concerns, but we can go further.
 
 For me, this remains the hardest piece of the puzzle. Whether it was working on [Dough](https://benbarnett.net/blog/2015/01/29/making-with-dough) or [x-dash](https://github.com/Financial-Times/x-dash/), the organisational fit for a quality set of shared components doesn’t necessarily align with a feature-focused outcome. This mainly applies to larger organisations with multiple teams.
 
