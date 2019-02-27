@@ -52,14 +52,14 @@ Working towards consistency from a shared codebase can appear to slow things dow
 
 The efficiency of writing once & deploying everywhere comes after the team coordination dance has been done. The key is getting past that point. The first phase is high cost, low (apparent) output.
 
-Generally, I think we help team coordination by taking another look at product ownership. Slicing ownership by page doesn’t always cut it, and owning features without the context of the pages they live on isn’t much better. We have guilds for cross-cutting concerns, but we can go further.
+Generally, I think we help team coordination by taking another look at product ownership. Slicing ownership by page doesn’t always cut it, and owning features without the context of the pages they live on isn’t always better. We have guilds for cross-cutting concerns, but we can go further.
 
-For me, this remains the hardest piece of the puzzle. Whether it was working on [Dough](https://benbarnett.net/blog/2015/01/29/making-with-dough) or [x-dash](https://github.com/Financial-Times/x-dash/), the organisational fit for a quality set of shared components doesn’t necessarily align with a feature-focused outcome.
+For me, this remains the hardest piece of the puzzle. Whether it was working on [Dough](https://benbarnett.net/blog/2015/01/29/making-with-dough) or [x-dash](https://github.com/Financial-Times/x-dash/), the organisational fit for a quality set of shared components doesn’t necessarily align with a feature-focused outcome. This mainly applies to larger organisations with multiple teams.
 
-While writing this post, [Darian Moody tweeted](https://twitter.com/djm_/status/1100776855236476928) something that essentially distills this post into a few characters:
+While writing this post, [Darian Moody tweeted](https://twitter.com/djm_/status/1100776855236476928) something that distills this post into a few words:
 
 > Changing code is easy.
 > 
 > Changing human process is the hard mode.
 
-The need for this way of working isn’t going away. I hope to write another post, in less than a decade, that speaks of how the industry adapted to make all this a bit easier.
+The need for this way of working isn’t going away. I hope to write another post – in less than a decade – that speaks of how the industry adapted to make all this a bit easier.
