@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Shared components, ten years on
+title: Shared code, ten years on
 categories:
 - Ramblings
 - Tech
