@@ -34,7 +34,7 @@ Unintentionally, we were moving closer to something like an outsourcing model. D
 
 Lets say you have a home page and an article page. These pages have different product teams, but use a shared component that needs to be changed to handle offline. You also run these pages on the three different device platforms.
 
-Prioritising making this work is a tough sell when the various product owners have existing commitments. Even if they dig your new thing, it might not be appropriate for them to drop other work in place of it. Team coordination issues can appear.
+Prioritising this work is a tough sell when the various product owners have existing commitments. Even if they dig your new thing, it might not be appropriate for them to drop other work in place of it. Team coordination issues can appear.
 
 Bring in native release cycles (App stores) and you _really_ need to get this stuff right before shipping.
 
@@ -50,11 +50,11 @@ Things get confusing when the bulk of the code is built with Rails, but there is
 
 Working towards consistency from a shared codebase can appear to slow things down to a point where it is hard to justify. Would it have been faster for the separate teams to implement their own verions, rather than come up with a shared solution? [...question left dramatically unanswered...]
 
-The efficiency of writing once & deploying everywhere comes after the team coordination dance has been done. The key is getting past that point. The first phase is high cost, low (apparent) output. This particular project is at the end of phase one and, as often the case, the future is uncertain. I am happy to say though that the shared components are live on mulitple platforms.
+The efficiency of writing once & deploying everywhere comes after the team coordination dance has been done. The key is getting past that point. The first phase is high cost, low (apparent) output.
 
-Generally, I think we can redefine ‘coordination dance’ as a chance to re-shape product ownership within an organisation. Slicing ownership by page doesn’t always cut it, and owning features without the context of the pages they live on isn’t much better. We have guilds for cross-cutting concerns, but we can go further.
+Generally, I think we help team coordination by taking another look at product ownership. Slicing ownership by page doesn’t always cut it, and owning features without the context of the pages they live on isn’t much better. We have guilds for cross-cutting concerns, but we can go further.
 
-For me, this remains the hardest piece of the puzzle. Whether it was working on [Dough](https://benbarnett.net/blog/2015/01/29/making-with-dough) or [x-dash](https://github.com/Financial-Times/x-dash/), the organisational fit for a quality set of shared components often grates against a feature-focused outcome.
+For me, this remains the hardest piece of the puzzle. Whether it was working on [Dough](https://benbarnett.net/blog/2015/01/29/making-with-dough) or [x-dash](https://github.com/Financial-Times/x-dash/), the organisational fit for a quality set of shared components doesn’t necessarily align with a feature-focused outcome.
 
 While writing this post, [Darian Moody tweeted](https://twitter.com/djm_/status/1100776855236476928) something that essentially distills this post into a few characters:
 
