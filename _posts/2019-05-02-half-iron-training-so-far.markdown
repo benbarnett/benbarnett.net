@@ -6,7 +6,7 @@ categories:
 - Health
 ---
 
-Its been a few months since [I wrote about my sense of doom when I woke up to the new year realising what I’d signed up for in June](/blog/2019/01/14/training-dawning-cotswolds). The Cotswold 113 triathlon is now about 5 weeks away.
+Its been a few months since [I wrote about my sense of doom when I woke up to the new year realising what I’d signed up for in June](/blog/2019/01/14/training-dawning-cotswolds). The [Cotswold 113 triathlon](https://www.113events.com/cotswold-113/) is now about 5 weeks away.
 
 In the darker winter months, I got up & running quite successfully with Zwift on the turbo trainer. After finding a little nook in the house (not as grand as that sounds), I’ve had many painful yet enjoyable early mornings in the pain cave.
 
