@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Half iron distance Triathlon training, so far
+title: Cotswold 113 training, so far
 categories:
 - Ramblings
 - Health
