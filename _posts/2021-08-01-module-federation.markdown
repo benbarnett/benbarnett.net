@@ -13,7 +13,7 @@ A large company I am working with operate a microservice  architecture, comprisi
 
 In a "traditional" setup (I love how we get to use words like this literally instantly after using a new technology), we might publish shared components to an npm registry, using a [semantic versioning policy](https://semver.org/). This is great because the various apps can pin to a major e.g. `1.x.x` meaning they don't need to worry about breaking changes coming their way. Even better, they can go further and use dependabot to automated minor & patch upgrades. The downside here is even in the most efficent update strategy, there is _always_ a lag between publishing a new version and the hundreds of apps pulling it in. And for internal dependencies, sometimes these aren’t the top priority.
 
-This means there is an inevitable time period where users are seeing different versions of components across different pages. This is particularly noticable if this is something like navigation or a logo change.
+This means there is an inevitable time period where users are seeing different versions of components from page-to-page. This is particularly noticable if this is something like navigation or a logo change.
 
 In the style of Alan Partridge, we cut to an underside camera angle and offer a tonal gear shift. “Can we do better?”
 
@@ -21,55 +21,63 @@ Microfrontends are nothing new, but iframe implementations - although forcing a 
 
 # Module federation as continuous component delivery
 
-With federation we do away with dependency bumps. We deploy our code once, and its updated everywhere. The code, although fetched remotely through a network request, is executed in-place. This is one to be aware of; its great to consume shared state and any global reset styles, but important to have a well defined component boundary (or "frame").
+With federation we do away with dependency bumps and think of our libraries as applications. We deploy our code once, and its updated everywhere. The code, although fetched remotely through a network request, is executed in-place. 
 
-## How tho
+This is one to be aware of; its useful to inherit shared state (think styled-component theme context), but important to have a well defined component boundary (or "frame").
 
-This is a new-ish technology and even if the API is fairly stable, the tooling and patterns around it are emerging rapidly. We chose to abstract as much of this as possible behind a helper component which will do much of the configuration for the app teams consuming the components. 
+## How?
 
-We have a few lines of code that allow us to define the webpack remote entrypoint at runtime (similar to the [dynamic-system-host example](https://github.com/module-federation/module-federation-examples/tree/master/dynamic-system-host)). This is essentially our component loader and a crucial part to serving users the right version of components.
+This is a relatively recent addition to Webpack and even if the API is stable, the tooling and patterns around it are emerging rapidly. We chose to abstract a lot of the component loading logic into a library, allowing us to refactor the mechanisms here. 
 
-These patterns are emerging, and there are [plugins evolving from community discussion on github](https://github.com/module-federation/module-federation-examples/issues/566).
+We have a few lines of code that allow us to define the webpack remote entrypoint at runtime (similar to the [dynamic-system-host example](https://github.com/module-federation/module-federation-examples/tree/master/dynamic-system-host) provided by Zach). This is our component loader and a crucial part to serving users the right version of components.
 
-For this reason, and well, we are writing frontend code anyway, we follow defensive architecture principles. Having a central definition for how we load components, we can refactor our component loader to use any mechanism we like, provided the API we provide to teams remains stable.
+Given we have multiple remote applications, each serving their own modules, we have a small registry to store our remotes. We want to support this approach for the same reason we want to use microservices -- independent deployment cycles and team autonomy (amongst many other reasons).
 
-Given we have multiple remote applications serving different collections modules, we have a small registry of remotes applications. We use separate remotes following the same principles as we use microservices.
-
-All this manifests as kind of interface for teams, which we've kept as 'Reacty' as possible, given that's the language apps are written in:
+All this manifests as a simple yet powerful for teams, which we've kept as 'Reacty' as possible, given that's the language apps are written in:
 
 ```tsx
-<RemoteModule remote="Navigation" module="AccountSettings" fallback={<Loading />}>
+export const Navigation = () => <RemoteModule remote="Navigation" module="AccountSettings" fallback={<Loading />}>
+```
+
+Teams can then render this in a familiar fashion:
+
+```tsx
+<Navigation />
 ```
 
 Behind the scenes, we fetch the `Navigation` remote (or return a cached copy if another component got there first), and then call `.get('AccountSettings')` on the resolved container.
 
-We also render an ErrorBoundary here which provides the owners of the `Navigation` remote application all the observability they could hope for. This happens transparently to the app team, but we pass the errors up to them too so they can handle their own UX gracefully.
+We also render an ErrorBoundary here which provides the owners of the `Navigation` remote application all the observability they could hope for. This happens transparently to the app team, but we pass the errors up to them too so they can handle their own UX gracefully. We lean heavily on `React.Suspense`.
 
 
 ## Deploying _everywhere_ kind of removes our safety net?
 
-You're right, it does. We really need to up our game when it comes to e2e testing and monitoring. But you were doing this already right?
+It does. Yes, we need to make sure our tests are covering all the right areas, and we make use of synthetic UI testing as much as possible on some of our consuming applications. We can’t issue breaking changes like we do with libraries.
+
+Once in the mindset of thinking of your libraries as applications, there is much potential to tap. A/B testing (and many other forms of experimentation) becomes a breeze, for example. 
 
 ### Testing
 
-Right now its difficult to fully test federated modules in Jest or similar because of the dependency on webpack globals. So we do rely more heavily on Cypress to ensure our components are fully loaded in a browser context.
+Right now its difficult to fully test federated modules in Jest (i.e. JSDOM) or similar because of the dependency on webpack globals. So we do rely more heavily on Cypress and in-browser testing to ensure our components are fully loaded. 
+
+Why not have your component library load its own components via federation as well? Not only does this test the asynchronous nature of the modules, but publishing the component library along with the components (in the same application) means you have a single target for your e2e testing.
 
 ### Monitoring
 
-The nice thing about federated module remotes is of course that you are a running application, not just a library on npm. This is great because we can add much more detailed tracing and relevant alerts for how things are operating. A sudden flatline in traffic to our component endpoints? Perhaps we broke our component loader somehow. 
-
-Most apps are static & client side rendered. So we've been fortunate to use React Suspense (although React 18 looks to have support for SSR with Suspense) without the need for additional libraries such as Loadable. 
+Another advantage for applications as libraries is that we can more detailed observability. A sudden flatline in traffic to our component endpoints? Perhaps we broke our component loader somehow. 
 
 ## Fiddly bits
 
-So far, by abstracting the slightly grittier code - remote module system loading - into our own helper library, we've kept away some of the complexity. We also provide a shared `createWebpackConfig()` function to keep the configuration required by app teams simple. 
+So far, by abstracting the slightly grittier code - remote module system loading - into our own helper library, we’ve kept away some of the complexity. We also provide a shared `createWebpackConfig()` function to keep the configuration required by app teams simple. 
 
-It seems some of the most powerful elements of module federation is the shared module configuration. Having the ability to provide fallback modules should a host app not have a particular dependency available, or equally, to avoid loading it twice if its already available, makes for a highly robust system. 
+Shared module configuration is incredibly powerful but can be tricky to grok. Having the ability to provide fallback modules should a host app not have a particular dependency available, or equally, to avoid loading it twice if its already available, makes for a highly robust system. But it can be tricky to diagnose when incorrect.
 
-Right now we share all available dependencies, and configure a few of them to be singletons to ensure we have a single copy of the various states. The real test for this will come when we need to gradually update one of the major libraries (React 18?). There are a few options here, but that's for another article.
+We also still have some overrides in our wepback config to make things behave, particularly as there is a [very different set of optimization defaults for development & production](https://webpack.js.org/configuration/optimization/) builds. I won’t lie to you, I have spent a lot of time reading through module manifests trying to work out why things aren’t loading as expected. Perhaps I’ll expand on some of these in another post.
 
 # Conclusion
 
-We want to convert more & more components to use this. We started with small, arguably non-critical components and will dial up our confidence to more critical ones as we go.
+This feels like a big step forward for microfrontends and we are probably only scratching the surface
 
-There were definitely some technical hurdles to overcome. We still have some overrides in our webpack config to make things behave. We also found some gotchas between development and production environments due to differing webpack defaults (such as module & chunk naming). The fixes have typically been one-liners, but the diagnosis a _lot_ more than that. I have a follow up article about one particular issue in the works.
+ Of the technical gotchas, the fixes have typically been one-liners, but the diagnosis a _lot_ more than that.
+
+ On balance, combined with how well this can scale, this is something well worth exploring. I really recommend looking through the [module-federation-examples on Github](https://github.com/module-federation/module-federation-examples) for some inspiration.
