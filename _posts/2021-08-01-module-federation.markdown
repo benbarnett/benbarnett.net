@@ -83,14 +83,14 @@ So far, by abstracting the slightly grittier code - remote module system loading
 
 [Shared module configuration](https://webpack.js.org/concepts/module-federation/) is incredibly powerful but can be tricky to grok. Having the ability to provide fallback modules should a host app not have a particular dependency available, or equally, to avoid loading it twice if its already available, makes for a highly robust system. It can be taxing to diagnose when incorrect.
 
-We also still have some overrides in our wepback config to make things behave, particularly as there is a [very different set of optimization defaults for development & production](https://webpack.js.org/configuration/optimization/) builds. I won’t lie to you, I have spent a lot of time reading through module manifests trying to work out why things aren’t loading as expected. Perhaps I’ll expand on some of these in another post.
+We also still have some overrides in our Webpack config to make things behave, particularly as there is a [very different set of optimization defaults for development & production](https://webpack.js.org/configuration/optimization/) builds. I won’t lie to you, I have spent a lot of time reading through module manifests trying to work out why things aren’t loading as expected. Perhaps I’ll expand on some of these in another post.
 
 # Conclusion
 
 This feels like a big step forward for microfrontends, and frontend in general. We are really only scratching the surface.
 
-Of the technical gotchas, the fixes have typically been one-liners, but the diagnosis a _lot_ more than that. Even since we started this work a few months ago, the [documentation on webpack.js.org](https://webpack.js.org/concepts/module-federation/) has evolved, with suggestions for how to solve some common problems being added. These common problems are still bubbling up and I'm sure the patterns emerging will smooth over some of the gnarlier bits.
+Of the technical gotchas, the fixes have typically been one-liners, but the diagnosis a _lot_ more than that. Even since we started this work a few months ago, the [documentation on webpack.js.org](https://webpack.js.org/concepts/module-federation/) has evolved, with suggestions for how to solve some common problems being added. These common problems are still bubbling up.
 
-I really recommend [the book](https://module-federation.myshopify.com/products/practical-module-federation) as many of the resources in there go in to more detail than can be found online. However the [module-federation-examples on Github](https://github.com/module-federation/module-federation-examples) provide plenty of inspiration.
+I really recommend reading [Practical Module Federation](https://module-federation.myshopify.com/products/practical-module-federation) by Jack Herrington & Zach Jackson as many of the resources in there go in to more detail than can be found online. However the [module-federation-examples on Github](https://github.com/module-federation/module-federation-examples) provide plenty of inspiration.
 
 On balance, combined with how well this can scale, this is something really rather [~~game changing~~](https://www.macmillanthesaurus.com/game-changer) _scene altering_.
