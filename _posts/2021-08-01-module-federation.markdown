@@ -51,7 +51,7 @@ Behind the scenes, we fetch the `Navigation` remote (or return a cached copy if 
 
 We also render an ErrorBoundary here which provides the owners of the `Navigation` remote application all the observability they dream of.
 
-Errors relevant to the component authors (in this case, the Navigation team) are sent transparently. We pass any errors up to the consuming (host) app so they can handle their own UX gracefully.
+Errors relevant to the component authors (in this case, the Navigation team) are sent transparently. We also pass errors up to the consuming (host) app so they can handle their own UX gracefully.
 
 We lean heavily on `React.Suspense` for this and the asynchronous module loading.
 
