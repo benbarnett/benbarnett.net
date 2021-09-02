@@ -11,13 +11,15 @@ Firstly, this article is not a webpack module federation getting started guide. 
 
 A large company I am working with operate a microservice architecture, comprising of hundreds of apps serving a single experience to the many end users. Those many users who by the way, couldn’t care less about microservices. They might have a couple more opinions on inconsistent UX or broken functionality, though.
 
-In a "traditional" setup (I love how we get to use words like this literally instantly after using a new technology), we might publish shared components to an npm registry, using a [semantic versioning policy](https://semver.org/). This is great because the various apps can pin to a major e.g. `1.x.x` meaning they don't need to worry about breaking changes coming their way. Even better, they can go further and use dependabot to automated minor & patch upgrades. The downside here is even in the most efficent update strategy, there is _always_ a lag between publishing a new version and the hundreds of apps pulling it in. And for internal dependencies, sometimes these aren’t the top priority.
+In a "traditional" setup (I love how we get to use words like this literally instantly after using a new technology), we might publish shared components to an npm registry, using a [semantic versioning policy](https://semver.org/). This is great because the various apps can pin to a major e.g. `1.x.x` and not worry about breaking changes. They might also use dependabot to automate some of this.
 
-This means there is an inevitable time period where users are seeing different versions of components from page-to-page. This is particularly noticable if this is something like navigation or a logo change.
+ The downside here is even in the most efficent update strategy, there is a lag between publishing a new version and the hundreds of apps pulling it in. This is particularly noticable if this is something like navigation or a logo change.
 
-In the style of Alan Partridge, we cut to an underside camera angle and offer a tonal gear shift. “Can we do better?”
+In the style of Alan Partridge, we cut to an underside camera angle and offer a tonal gear shift. 
 
-Microfrontends are nothing new, but iframe implementations - although forcing a strict 'frame' around each delivery - have felt tricky to stitch together.
+> “Can we do better?”
+
+Microfrontends are nothing new, but iframe implementations have felt tricky to stitch together.
 
 # Module federation as continuous component delivery
 
@@ -68,6 +70,12 @@ A nice pattern is to have your component library documentation pull in the compo
 ### Monitoring
 
 Another advantage for applications as libraries is that we can more detailed observability. A sudden flatline in traffic to our component endpoints? Perhaps we broke our component loader somehow.
+
+### Caching
+
+Thanks to Webpack’s [deterministic module naming algorithm](https://webpack.js.org/configuration/optimization/#optimizationmoduleids), we can still benefit from long term caching for the modules that are loaded. It will also resolve any imports and re-use anything that’s been loaded already (either by the host app, or any other federated modules). This is all enabled by default in production on Webpack 5.
+
+The thing to watch out for is the `remoteEntry.js` file - our manifest for each of the remote applications. This is something we don’t want to cache so apps are always being signposted to the right modules and their dependencies.
 
 ## Fiddly bits
 
