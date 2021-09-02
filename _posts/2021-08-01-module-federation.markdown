@@ -15,7 +15,7 @@ In a "traditional" setup (I love how we get to use words like this literally ins
 
  The downside here is even in the most efficent update strategy, there is a lag between publishing a new version and the hundreds of apps pulling it in. This is particularly noticable if this is something like navigation or a logo change.
 
-In the style of Alan Partridge, we cut to an underside camera angle and offer a tonal gear shift. 
+In the style of Alan Partridge, we cut to an underside camera angle and offer a tonal gear shift:
 
 > “Can we do better?”
 
@@ -69,7 +69,7 @@ A nice pattern is to have your component library documentation pull in the compo
 
 ### Monitoring
 
-Another advantage for applications as libraries is that we can more detailed observability. A sudden flatline in traffic to our component endpoints? Perhaps we broke our component loader somehow.
+Another advantage for applications as libraries is that we have better observability. A sudden flatline in traffic to our component endpoints? Perhaps we broke our component loader somehow. We can monitor latency, error rates, everything we’re used to doing with applications.
 
 ### Caching
 
@@ -81,13 +81,13 @@ The thing to watch out for is the `remoteEntry.js` file - our manifest for each 
 
 So far, by abstracting the slightly grittier code - remote module system loading - into our own helper library, we’ve kept away some of the complexity. We also provide a shared `createWebpackConfig()` function to keep the configuration required by app teams simple.
 
-[Shared module configuration](https://webpack.js.org/concepts/module-federation/) is incredibly powerful but can be tricky to grok. Having the ability to provide fallback modules should a host app not have a particular dependency available, or equally, to avoid loading it twice if its already available, makes for a highly robust system. But it can be tricky to diagnose when incorrect.
+[Shared module configuration](https://webpack.js.org/concepts/module-federation/) is incredibly powerful but can be tricky to grok. Having the ability to provide fallback modules should a host app not have a particular dependency available, or equally, to avoid loading it twice if its already available, makes for a highly robust system. It can be taxing to diagnose when incorrect.
 
 We also still have some overrides in our wepback config to make things behave, particularly as there is a [very different set of optimization defaults for development & production](https://webpack.js.org/configuration/optimization/) builds. I won’t lie to you, I have spent a lot of time reading through module manifests trying to work out why things aren’t loading as expected. Perhaps I’ll expand on some of these in another post.
 
 # Conclusion
 
-This feels like a big step forward for microfrontends and we are probably only scratching the surface
+This feels like a big step forward for microfrontends, and frontend in general. We are really only scratching the surface.
 
 Of the technical gotchas, the fixes have typically been one-liners, but the diagnosis a _lot_ more than that. Even since we started this work a few months ago, the [documentation on webpack.js.org](https://webpack.js.org/concepts/module-federation/) has evolved, with suggestions for how to solve some common problems being added. These common problems are still bubbling up and I'm sure the patterns emerging will smooth over some of the gnarlier bits.
 
