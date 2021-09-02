@@ -45,9 +45,13 @@ Teams can then render this in a familiar fashion:
 <Navigation />
 ```
 
-Behind the scenes, we fetch the `Navigation` remote (or return a cached copy if another component got there first), and then call `.get('AccountSettings')` on the resolved container.
+Behind the scenes, we fetch the `Navigation` remote (or return a cached copy if another component got there first), and then call `.get('AccountSettings')` - returning a promise which will resolve with the AccountSettings module.
 
-We also render an ErrorBoundary here which provides the owners of the `Navigation` remote application all the observability they could hope for. This happens transparently to the app team, but we pass the errors up to them too so they can handle their own UX gracefully. We lean heavily on `React.Suspense`.
+We also render an ErrorBoundary here which provides the owners of the `Navigation` remote application all the observability they dream of. 
+
+Errors relevant to the component authors (in this case, the Navigation team) are sent transparently. We pass any errors up to the consuming (host) app so they can handle their own UX gracefully. 
+
+We lean heavily on `React.Suspense` for this and the asynchronous module loading.
 
 
 ## Deploying _everywhere_ kind of removes our safety net?
