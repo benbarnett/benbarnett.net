@@ -33,7 +33,7 @@ We have a few lines of code that allow us to define the webpack remote entrypoin
 
 Given we have multiple remote applications, each serving their own modules, we have a small registry to store our remotes. We want to support this approach for the same reason we want to use microservices -- independent deployment cycles and team autonomy (amongst many other reasons).
 
-All this manifests as a simple yet powerful for teams, which we've kept as 'Reacty' as possible, given that's the language apps are written in:
+All this manifests as a simple API, which we've kept as 'Reacty' as possible, given that's the language apps are written in:
 
 ```tsx
 export const Navigation = () => <RemoteModule remote="Navigation" module="AccountSettings" fallback={<Loading />}>
