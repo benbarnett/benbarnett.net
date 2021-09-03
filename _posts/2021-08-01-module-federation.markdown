@@ -13,7 +13,7 @@ Take a microservice ecosystem, comprising of hundreds of apps serving a single e
 
 In a "traditional" setup (I love how we get to use words like this literally instantly after using a new technology), we might publish shared components to an npm registry, using a [semantic versioning policy](https://semver.org/). This is great because the various apps can pin to a major e.g. `1.x.x` and not worry about breaking changes. They might also use dependabot to automate some of this.
 
-The downside here is even in the most efficent update strategy, there is a lag between publishing a new version and the hundreds of apps pulling it in. This is particularly evident if this is something like navigation or a logo change.
+The downside here is even in the most efficent update strategy, there is a lag between publishing a new version and the hundreds of apps pulling it in. This is particularly evident for global elements like navigation or logos.
 
 In the style of Alan Partridge, we cut to an underside camera angle and offer a tonal gear shift:
 
@@ -47,7 +47,7 @@ type ModuleProps =
   | { remote: "Navigation"; module: "AccountSettings" | "Footer" | "Header" }
   | { remote: "OtherRemote"; module: "OtherComponent" };
 
-// union for props above and the optional fallback state for React Suspense
+// union for props above and the nullable fallback state for React Suspense
 type RemoteModuleProps = ModuleProps & { fallback: React.ReactNode | null };
 
 export const RemoteModule = ({
@@ -59,7 +59,9 @@ export const RemoteModule = ({
 
   return (
     <ErrorBoundary>
-      <React.Suspense fallback={fallback}>{Module}</React.Suspense>
+      <React.Suspense fallback={fallback}>
+        <Module />
+      </React.Suspense>
     </ErrorBoundary>
   );
 };
@@ -68,26 +70,28 @@ export const RemoteModule = ({
 Then over in our Navigation component, we can export an implementation:
 
 ```tsx
-export const Navigation = () => <RemoteModule remote="Navigation" module="AccountSettings" fallback={<Loading />}>
+export const Navigation = () => {
+  return (
+    <RemoteModule
+      remote="Navigation"
+      module="AccountSettings"
+      fallback={<Loading />}
+    />
+  );
+};
 ```
 
-Teams can then render this in a familiar fashion:
+Behind the scenes, `loadComponent()` will fetch the `Navigation` remote (or return a cached copy if another component got there first), and then call `Navigation.get('AccountSettings')`. This returns a promise which will resolve with the AccountSettings module. There is more detail on ModuleFederation is doing here [on the Webpack docs](https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers).
 
-```tsx
-<Navigation />
-```
+It is advisable to wrap the remote module in an [Error Boundary](https://reactjs.org/docs/error-boundaries.html) which can be configured to offer observability to the owners of `Navigation`.
 
-Behind the scenes, `loadComponent()` will fetch the `Navigation` remote (or return a cached copy if another component got there first), and then call `Navigation.get('AccountSettings')` - returning a promise which will resolve with the AccountSettings module.
-
-It is advisable to wrap the remote module in an [`<ErrorBoundary />`](https://reactjs.org/docs/error-boundaries.html) here which provides the owners of the `Navigation` remote application more insight into when things go awry.
-
-Errors relevant to the component authors (in this case, the Navigation team) can be sent transparently, but it is worth passing errors up to the consuming (host) app so they can handle their own UX gracefully as well.
+Errors relevant to the component authors can be sent transparently, but it is worth passing errors up to the consuming (host) app so they can handle their own UX gracefully as well.
 
 ## Deploying _everywhere_ kind of removes our safety net?
 
 It does. Yes, we need to make sure our tests are covering all the key areas. We can’t issue breaking changes like we do with libraries.
 
-Once in the mindset of thinking of your libraries as applications, there is much potential to tap. A/B testing (and many other forms of experimentation) becomes a breeze, for example.
+Once in the mindset of thinking of your libraries as applications, there is much potential to tap. A/B testing for example.
 
 ### Testing
 
@@ -101,22 +105,20 @@ Another advantage for applications as libraries is that we have better observabi
 
 ### Caching
 
-Thanks to Webpack’s [deterministic module naming algorithm](https://webpack.js.org/configuration/optimization/#optimizationmoduleids), long term caching for the modules is still possible. It will also resolve imports and re-use anything that’s been loaded already (either by the host app, or any other federated modules). This is all enabled by default in production on Webpack 5.
+Thanks to Webpack’s [deterministic module naming](https://webpack.js.org/configuration/optimization/#optimizationmoduleids), long term caching for the modules comes out of the box. It will also resolve imports and re-use anything that’s been loaded already (either by the host app, or any other federated modules). This is all enabled by default in production on Webpack 5.
 
 The thing to watch out for is the `remoteEntry.js` file - our manifest for each of the remote applications. This is something we don’t want to cache so apps are always being signposted to the right modules and their dependencies.
 
 ## Fiddly bits
 
-[Shared module configuration](https://webpack.js.org/concepts/module-federation/) is incredibly powerful but can be tricky to grok. Having the ability to provide fallback modules should a host app not have a particular dependency available, or equally, to avoid loading it twice if its already available, makes for a highly robust system. It can be taxing to diagnose when incorrect.
+[Shared module configuration](https://webpack.js.org/concepts/module-federation/) is incredibly powerful but can be tricky to grok. Providing fallback modules should a host app not have a particular dependency available, or equally, to avoid loading it twice if its already available, makes for a highly robust system. It can be taxing to diagnose when incorrect.
 
 In my experiments so far, I’ve needed some overrides to optimization settings in the webpack config. I won’t lie to you, I have spent a lot of time reading through module manifests trying to work out why things aren’t loading as expected. Usually it boils down to a [different set of defaults in production](https://webpack.js.org/configuration/optimization/), or a mismatch in the Shared Module configuration.
 
 # Conclusion
 
-This feels like a big step forward for microfrontends, and frontend in general. We are really only scratching the surface.
-
 Of the technical gotchas, the fixes have typically been one-liners, but the diagnosis a _lot_ more than that. The [documentation on webpack.js.org](https://webpack.js.org/concepts/module-federation/) is improving, with suggestions for how to solve some common problems being added.
 
-I really recommend reading [Practical Module Federation](https://module-federation.myshopify.com/products/practical-module-federation) by Jack Herrington & Zach Jackson as many of the resources in there go in to more detail than can be found online. However the [module-federation-examples on Github](https://github.com/module-federation/module-federation-examples) provide plenty of inspiration. The community is really active over there, too.
+I recommend reading [Practical Module Federation](https://module-federation.myshopify.com/products/practical-module-federation) by Jack Herrington & Zach Jackson as it goes into more detail than I’ve been able to find online. Having said that, the [module-federation-examples on Github](https://github.com/module-federation/module-federation-examples) provide plenty of inspiration. The community is really active over there, too.
 
 On balance, combined with how well this can scale, this is something really rather [~~game changing~~](https://www.macmillanthesaurus.com/game-changer) _scene altering_.
