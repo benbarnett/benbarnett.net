@@ -9,13 +9,13 @@ Firstly, this article is not a webpack module federation getting started guide. 
 
 [Note to self: try to avoid the phrase 'game changer']
 
-Take a microservice ecosystem, comprising of hundreds of apps serving a single experience to many end users. Those many users who by the way, couldn’t care less about microservices. They might have a couple more opinions on inconsistent UX or broken functionality, though.
+Take a microservice ecosystem, comprising of hundreds of apps serving a unified set of experiences to many end users. Those many users who by the way, couldn’t care less about microservices. They might have a couple more opinions on inconsistent UX or broken functionality, though.
 
 In a "traditional" setup (I love how we get to use words like this literally instantly after using a new technology), we might publish shared components to an npm registry, using a [semantic versioning policy](https://semver.org/). This is great because the various apps can pin to a major e.g. `1.x.x` and not worry about breaking changes. They might also use dependabot to automate some of this.
 
-The downside here is even in the most efficent update strategy, there is a lag between publishing a new version and the hundreds of apps pulling it in. This is particularly evident for global elements like navigation or logos.
+The downside here is even in the most efficent update strategy, there is a lag between publishing a new version and potentially hundreds of apps pulling it in. This is particularly evident to users for global elements like navigation or logos.
 
-In the style of Alan Partridge, we cut to an underside camera angle and offer a tonal gear shift:
+In the style of Alan Partridge, we cut to a side camera angle and offer a tonal gear shift:
 
 > “Can we do better?”
 
@@ -35,12 +35,12 @@ Depending on your setup, you might need to define the remote application urls at
 
 One of the key benefits to microfrontends is giving component authors autonomy over their development cycles and having simple, decoupled codebases. These advantages will sound familiar if you’re used to working with microservices.
 
-At a larger company, there will likely be multiple remote applications, each providing their own set of modules. For this reason it can be useful to have a simple registry of known remotes to keep this under control.
+At a larger company, there could be multiple remote applications, each providing their own set of modules. For this reason it can be useful to have a simple registry of known remotes and a generic loader to keep this under control.
 
-All this manifests as a simple API, which we've kept as 'Reacty' as possible, given that's the language apps are written in:
+All this manifests as a simple API (implemented here in React):
 
 ```tsx
-// RemoteModule.tsx - a highly simplified version of a component loader
+// LazyModuleGeneric.tsx - a highly simplified version of a component loader
 
 // conditional props for remote applications and their known modules
 type ModuleProps =
@@ -48,13 +48,13 @@ type ModuleProps =
   | { remote: "OtherRemote"; module: "OtherComponent" };
 
 // union for props above and the nullable fallback state for React Suspense
-type RemoteModuleProps = ModuleProps & { fallback: React.ReactNode | null };
+type LazyModuleGenericProps = ModuleProps & { fallback: React.ReactNode | null };
 
-export const RemoteModule = ({
+export const LazyModuleGeneric = ({
   remote,
   module,
   fallback,
-}: RemoteModuleProps) => {
+}: LazyModuleGenericProps) => {
   const Module = React.lazy(() => loadComponent({ remote, module }));
 
   return (
@@ -67,12 +67,12 @@ export const RemoteModule = ({
 };
 ```
 
-Then over in our Navigation component, we can export an implementation:
+Then over in our AccountSettings component, we can export an implementation:
 
 ```tsx
-export const Navigation = () => {
+export const AccountSettings = () => {
   return (
-    <RemoteModule
+    <ModuleGeneric
       remote="Navigation"
       module="AccountSettings"
       fallback={<Loading />}
@@ -97,7 +97,7 @@ Once in the mindset of thinking of your libraries as applications, there is much
 
 Right now its difficult to fully test federated modules in Jest (i.e. JSDOM) because they depend on webpack globals such as `__webpack_init_sharing__` ([see on the docs](https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers)). In my experiments I decouple the components from the globals, but in some cases I mock them. Its not bomb proof though, so I definitely recommend at least _some_ in-browser testing.
 
-A nice pattern is to have your component library site pull in its components via federation, too. Not only does this demonstrate the asynchronous nature of the modules, but it provides the ideal test harness for your [e2e](https://www.cypress.io/) or [synthetic](https://www.datadoghq.com/blog/browser-tests/) testing.
+A nice pattern is to have your Design System docs site pull in its components via federation, too. Not only does this demonstrate the asynchronous nature of the modules, but it provides the ideal test harness for your [e2e](https://www.cypress.io/) or [synthetic](https://www.datadoghq.com/blog/browser-tests/) testing.
 
 ### Monitoring
 
@@ -109,7 +109,7 @@ If your remote component is mission critical, it is possible to fallback to a lo
 
 Thanks to Webpack’s [deterministic module naming](https://webpack.js.org/configuration/optimization/#optimizationmoduleids), we get long term caching for the modules. It will also resolve imports and re-use anything that’s been loaded already (either by the host app, or any other federated modules). This is all enabled by default in production on Webpack 5.
 
-The thing to watch out for is the `remoteEntry.js` file - our manifest for each of the remote applications. This is something we don’t want to cache so apps are always being signposted to the right modules and their dependencies.
+The thing to watch out for is the `remoteEntry.js` file - the remote application's module manfiest. This is something we want to cache carefully so apps are always being signposted to the right modules and their dependencies.
 
 ## Fiddly bits
 
