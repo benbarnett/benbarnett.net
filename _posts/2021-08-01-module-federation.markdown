@@ -95,17 +95,19 @@ Once in the mindset of thinking of your libraries as applications, there is much
 
 ### Testing
 
-Right now its difficult to fully test federated modules in Jest (i.e. JSDOM) because of the dependency on webpack globals. We therefore rely on in-browser testing to ensure our components are fully loaded.
+Right now its difficult to fully test federated modules in Jest (i.e. JSDOM) because they depend on webpack globals such as `__webpack_init_sharing__` ([see on the docs](https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers)). In my experiments I’ve found it useful to abstract as much as possible so we can get as much coverage as we can, and in some cases mocking these. Its not bomb proof though, so I definitely recommend at least _some_ in-browser testing.
 
-A nice pattern is to have your component library documentation pull in the components via federation, too. Not only does this demonstrate the asynchronous nature of the modules, but it provides the ideal test harness for your [e2e](https://www.cypress.io/) or [synthetic tests](https://www.datadoghq.com/blog/browser-tests/).
+A nice pattern is to have your component library site pull in its components via federation, too. Not only does this demonstrate the asynchronous nature of the modules, but it provides the ideal test harness for your [e2e](https://www.cypress.io/) or [synthetic](https://www.datadoghq.com/blog/browser-tests/) testing.
 
 ### Monitoring
 
 Another advantage for applications as libraries is that we have better observability. A sudden flatline in traffic to our component endpoints? Perhaps we broke our component loader somehow. We can monitor latency, error rates, everything we’re used to doing with applications.
 
+Although I’ve not explored myself, if your remote component is 'mission critical', its possible to fallback to a local copy of the component, using the 'traditional' approach we talked about earlier. Ok, the app might have a slightly stale version, but its better than nothing should your remote application be down.
+
 ### Caching
 
-Thanks to Webpack’s [deterministic module naming](https://webpack.js.org/configuration/optimization/#optimizationmoduleids), long term caching for the modules comes out of the box. It will also resolve imports and re-use anything that’s been loaded already (either by the host app, or any other federated modules). This is all enabled by default in production on Webpack 5.
+Thanks to Webpack’s [deterministic module naming](https://webpack.js.org/configuration/optimization/#optimizationmoduleids), long term caching for the modules helps us out. It will also resolve imports and re-use anything that’s been loaded already (either by the host app, or any other federated modules). This is all enabled by default in production on Webpack 5.
 
 The thing to watch out for is the `remoteEntry.js` file - our manifest for each of the remote applications. This is something we don’t want to cache so apps are always being signposted to the right modules and their dependencies.
 
