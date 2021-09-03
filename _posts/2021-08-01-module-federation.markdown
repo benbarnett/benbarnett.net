@@ -123,4 +123,4 @@ Of the technical gotchas, the fixes have typically been one-liners, but the diag
 
 I recommend reading [Practical Module Federation](https://module-federation.myshopify.com/products/practical-module-federation) by Jack Herrington & Zach Jackson as it goes into more detail than I’ve been able to find online. Having said that, the [module-federation-examples on Github](https://github.com/module-federation/module-federation-examples) provide plenty of inspiration. The community is really active over there, too.
 
-On balance, combined with how well this can scale, this is something really rather [~~game changing~~](https://www.macmillanthesaurus.com/game-changer) _scene altering_.
+On balance, combined with how well this can scale, this really is something rather [~~game changing~~](https://www.macmillanthesaurus.com/game-changer) _scene altering_.
