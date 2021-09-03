@@ -91,19 +91,19 @@ Errors relevant to the component authors can be sent transparently, but it is wo
 
 It does. Yes, we need to make sure our tests are covering all the key areas. We can’t issue breaking changes like we do with libraries.
 
-Once in the mindset of thinking of your libraries as applications, there is much potential to tap. A/B testing for example.
+Once in the mindset of thinking of your libraries as applications, there is much potential to tap;
 
 ### Testing
 
-Right now its difficult to fully test federated modules in Jest (i.e. JSDOM) because they depend on webpack globals such as `__webpack_init_sharing__` ([see on the docs](https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers)). In my experiments I’ve found it useful to abstract as much as possible so we can get as much coverage as we can, and in some cases mocking these. Its not bomb proof though, so I definitely recommend at least _some_ in-browser testing.
+Right now its difficult to fully test federated modules in Jest (i.e. JSDOM) because they depend on webpack globals such as `__webpack_init_sharing__` ([see on the docs](https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers)). In my experiments I decouple the components from the globals, but in some cases mocked them. Its not bomb proof though, so I definitely recommend at least _some_ in-browser testing.
 
 A nice pattern is to have your component library site pull in its components via federation, too. Not only does this demonstrate the asynchronous nature of the modules, but it provides the ideal test harness for your [e2e](https://www.cypress.io/) or [synthetic](https://www.datadoghq.com/blog/browser-tests/) testing.
 
 ### Monitoring
 
-Another advantage for applications as libraries is that we have better observability. A sudden flatline in traffic to our component endpoints? Perhaps we broke our component loader somehow. We can monitor latency, error rates, everything we’re used to doing with applications.
+Applications as libraries means we have better observability. A sudden flatline in traffic to our component endpoints? Perhaps we broke our component loader somehow. We can monitor latency, error rates, everything we’re used to doing with applications.
 
-Although I’ve not explored myself, if your remote component is 'mission critical', its possible to fallback to a local copy of the component, using the 'traditional' approach we talked about earlier. Ok, the app might have a slightly stale version, but its better than nothing should your remote application be down.
+If your remote component is mission critical, it is possible to fallback to a local copy of the component, using the 'traditional' approach we talked about earlier. Ok, the app might have a slightly stale version, but its better than nothing should your remote application fail to respond.
 
 ### Caching
 
