@@ -101,7 +101,7 @@ A nice pattern is to have your Design System docs site pull in its components vi
 
 ### Monitoring
 
-Applications as libraries means we have better observability. A sudden flatline in traffic to our component endpoints? Perhaps we broke our component loader somehow. We can monitor latency, error rates, everything we’re used to doing with applications.
+Libraries as applications means we have better observability. A sudden flatline in traffic to our component endpoints? Perhaps we broke our component loader somehow. We can monitor latency, error rates, everything we’re used to doing with applications.
 
 If your remote component is mission critical, it is possible to fallback to a local copy of the component, using the 'traditional' approach we talked about earlier. Ok, the app might have a slightly stale version, but its better than nothing should your remote application fail to respond.
 
