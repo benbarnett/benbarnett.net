@@ -95,7 +95,7 @@ Once in the mindset of thinking of your libraries as applications, there is much
 
 ### Testing
 
-Right now its difficult to fully test federated modules in Jest (i.e. JSDOM) because they depend on webpack globals such as `__webpack_init_sharing__` ([see on the docs](https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers)). In my experiments I decouple the components from the globals, but in some cases mocked them. Its not bomb proof though, so I definitely recommend at least _some_ in-browser testing.
+Right now its difficult to fully test federated modules in Jest (i.e. JSDOM) because they depend on webpack globals such as `__webpack_init_sharing__` ([see on the docs](https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers)). In my experiments I decouple the components from the globals, but in some cases I mock them. Its not bomb proof though, so I definitely recommend at least _some_ in-browser testing.
 
 A nice pattern is to have your component library site pull in its components via federation, too. Not only does this demonstrate the asynchronous nature of the modules, but it provides the ideal test harness for your [e2e](https://www.cypress.io/) or [synthetic](https://www.datadoghq.com/blog/browser-tests/) testing.
 
