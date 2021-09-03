@@ -107,7 +107,7 @@ If your remote component is mission critical, it is possible to fallback to a lo
 
 ### Caching
 
-Thanks to Webpack’s [deterministic module naming](https://webpack.js.org/configuration/optimization/#optimizationmoduleids), long term caching for the modules helps us out. It will also resolve imports and re-use anything that’s been loaded already (either by the host app, or any other federated modules). This is all enabled by default in production on Webpack 5.
+Thanks to Webpack’s [deterministic module naming](https://webpack.js.org/configuration/optimization/#optimizationmoduleids), we get long term caching for the modules. It will also resolve imports and re-use anything that’s been loaded already (either by the host app, or any other federated modules). This is all enabled by default in production on Webpack 5.
 
 The thing to watch out for is the `remoteEntry.js` file - our manifest for each of the remote applications. This is something we don’t want to cache so apps are always being signposted to the right modules and their dependencies.
 
