@@ -72,7 +72,7 @@ Then over in our AccountSettings component, we can export an implementation:
 ```tsx
 export const AccountSettings = () => {
   return (
-    <ModuleGeneric
+    <LazyModuleGeneric
       remote="Navigation"
       module="AccountSettings"
       fallback={<Loading />}
@@ -81,7 +81,7 @@ export const AccountSettings = () => {
 };
 ```
 
-Behind the scenes, `loadComponent()` will fetch the `Navigation` remote (or return a cached copy if another component got there first), and then call `Navigation.get('AccountSettings')`. This returns a promise which will resolve with the AccountSettings module. There is more detail on ModuleFederation is doing here [on the Webpack docs](https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers).
+Behind the scenes, `loadComponent()` will fetch the `Navigation` remote (or return a cached copy if another component got there first), and then call `Navigation.get('AccountSettings')`. This returns a promise which will resolve with the AccountSettings module. There is more detail on what ModuleFederation is doing here [on the Webpack docs](https://webpack.js.org/concepts/module-federation/#dynamic-remote-containers).
 
 It is advisable to wrap the remote module in an [Error Boundary](https://reactjs.org/docs/error-boundaries.html) which can be configured to offer observability to the owners of `Navigation`.
 
