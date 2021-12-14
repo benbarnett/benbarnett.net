@@ -6,6 +6,8 @@ categories:
 - Health
 ---
 
+**Trigger warning: this post talks about a missing person and some grief. There is nothing overtly graphic.**
+
 2021 was footnoted with a significant moment of closure. A moment that’s made me wonder what my next ten years might look like. So when someone on Twitter mentioned they were doing an end of year review, it struck a chord. I’ve followed suit, but extended the scope to ten years for reasons below.
 
 It was the day we finally got Dad’s presumption of death order — the legal death certificate — after a lengthy court hearing with my brothers, our solicitor, and a judge. Going into what I thought would be a tick-box admin exercise triggered a range of feelings and memory jogs. Hearing the situation end-to-end in an earnest legal environment was difficult.
