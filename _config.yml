@@ -48,3 +48,4 @@ defaults:
       share: true
       author_profile: true
       author: Ben Barnett
+      related: true
