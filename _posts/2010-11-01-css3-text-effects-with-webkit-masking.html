@@ -13,8 +13,7 @@ type: post
 published: true
 meta: {}
 ---
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html><body>
+
 <p>Dead easy but cute little technique this one. I'm working with a design that had an overlay effect over some of the text based headings.</p>
 <p>The way I've seen it done before (and I have in fact done it myself) is to simply stick a PNG with alpha transparency on top of the text in question. Granted, this technique does work but it felt like a bit of a cludge. It also means you can't highlight the text underneath it. Annoying and bad for usability.</p>
 <p>I then cast my mind back to the stunning <a href="http://www.kaleidoscopeapp.com">Kaleidoscope App</a> website. Using a Webkit browser, look closely at the colour wheel triangle thingy and you'll notice it's spinning. Dig deeper in the CSS and you'll see they're using a really nice masking technique to achieve that.</p>
@@ -45,4 +44,3 @@ meta: {}
 <h2>Simple right?</h2>
 <p>This is a rudimentary use of the Webkit mask. As you can see from the Made by Sofa guys (creators of Kaleidoscope App), you can create some amazing effects and choose either to implement a technique for non-supporting browsers, or just degrade gracefully to a static version, as they've done.</p>
 <p>You can also use them on pretty much any DOM element there is, as the comments on the <a href="http://webkit.org/blog/181/css-masks/">Surfin' Safari</a> docs explain.</p>
-</body></html>

@@ -14,8 +14,7 @@ type: post
 published: true
 meta: {}
 ---
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html><body>
+
 <p>On a client project recently, we've been working with some heavy full page transitions, which can look <em>extra</em> lovely when on hardware accelerated browsers and devices. I was struggling to find a neat way to write the front-end code, which is using jQuery, to degrade and enhance itself automatically without putting switch statements and creating multiple stylesheets all over the place.
 This is where my <a href="http://playground.benbarnett.net/jquery-animate-enhanced/">jquery-animate-enhanced</a> plugin comes in. The idea was to have a one hundred percent seamless integration, and backwards compatibility with older browsers. For this reason, it just extends $.animate() which we all know and love and detects if you're trying to animate something that would be better off done with a CSS3 transition. Absolutely zero effort required.</p>
 <h2>The plugin.</h2>
@@ -47,4 +46,3 @@ This is where my <a href="http://playground.benbarnett.net/jquery-animate-enhanc
 </ul>
 <h2>Give it a go</h2>
 <p>More information is available either on the <a href="http://github.com/benbarnett/jQuery-Animate-Enhanced">GitHub repository</a>, or on the <a href="http://playground.benbarnett.net/jquery-animate-enhanced/">plugin homepage</a>. Thoughts very much welcome.</p>
-</body></html>

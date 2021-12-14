@@ -15,8 +15,7 @@ type: post
 published: true
 meta: {}
 ---
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html><body>
+
 <p>In the past week or so I’ve been working on a little side project that is making fairly heavy use of <strong>Lulu</strong> and their new <a href="http://api.lulu.com/publication/" target="_blank">Publication <strong>API</strong></a>. It’s a brilliant system, and although I can’t blame them as the <strong>Lulu</strong> <strong>API</strong> is a new release, the documentation is a little thin. After a bit of poking around their <a href="http://github.com/luluapi" target="_blank">Python example</a> on Github and more into Ruby’s HTTP class, I’ve managed to find a pretty neat and easy to implement method which I’ve written about here.
 To get the communication between your site and the <strong>Lulu</strong> Publication <strong>API</strong> the main libraries we need are;</p>
 <div class="wp_syntax">
@@ -217,4 +216,3 @@ json = <span style="color: #6666ff; font-weight: bold;">ActiveSupport::JSON</spa
 <h2>That’s it!</h2>
 <p>It may look like a lot of code above, but that really is all there is to it. I found the last stage quite fiddly, but it was more to do in terms of getting my PDF to the right DPI and exact sizes etc. You can find some sample PDFs from <a href="http://www.lulu.com/publish/books/?cid=nav_bks" target="_blank">Lulu’s Book Specifications</a> (at the bottom of the page).</p>
 <p>Feel free to get in touch if you need any more help getting up and running.</p>
-</body></html>
