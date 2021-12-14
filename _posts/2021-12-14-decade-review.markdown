@@ -14,9 +14,9 @@ Given his death certificate will be dated back to 2012, it somehow rewrites the 
 
 I’ve got used to telling the story about my Dad as if it all happened to someone else. I’ve only recently realised that I slipped into that coping mechanism over the 10 years he’s been missing.
 
-Speaking of coping mechanisms, music has been the most incredible time machine. What a gift. I’ll opt in & out of this and treasure the fact I can ’go there’ when the need arises. I find whole albums are the best as somehow remembering what song comes next adds to the effect. Good on Adele for getting Spotify remove the default play mode being shuffle, for this reason.
+Speaking of coping mechanisms, music has been the most incredible time machine. What a gift. I’ll opt in & out of this and treasure the fact I can ’go there’ when the need arises. An album heard in the correct order only adds to this.
 
-How much has changed in ten years with the world and my own life would be amazing to explain to Dad. So perhaps writing some of this down, addressed to Dad, will be cathartic and help me hone the next decade.
+How much has changed in ten years with the world and my life would be amazing to explain to Dad. So perhaps writing some of this down, addressed to Dad, will be cathartic and help me hone the next decade.
 
 - A few months after your disappearance, I met my wife (she’s great by the way)
 - We’ve had two children (they’re great too), the second being born during a pandemic
