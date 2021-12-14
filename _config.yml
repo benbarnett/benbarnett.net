@@ -32,3 +32,16 @@ plugins:
 exclude:
   - Gemfile
   - Gemfile.lock
+
+comments:
+  provider: "disqus"
+  disqus:
+    shortname: "benbarnett"
+
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      read_time: true
