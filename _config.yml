@@ -45,3 +45,6 @@ defaults:
       type: posts
     values:
       read_time: true
+      share: true
+      author_profile: true
+      author: Ben Barnett
