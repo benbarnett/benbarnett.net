@@ -8,7 +8,7 @@ categories:
 
 2021 was footnoted with a significant moment. A moment that’s forced me to wonder what my next ten years might look like. So when someone mentioned they were doing an end of year review, it struck a chord. I’ve followed suit, but extended the scope to ten years for reasons below.
 
-The concluding moment to this particular decade was a bittersweet day of finally getting my Dad’s presumption of death order the legal death certificate - after a lengthy ~~Zoom call~~ court hearing, with my brothers, our solicitor, and a judge. Going into what I thought would be a tick-box admin exercise triggered a range of feelings and memory jogs. Hearing the situation end-to-end from an earnest Judge was tough.
+The concluding moment to this particular decade was a bittersweet day of finally getting my Dad’s presumption of death order - the legal death certificate - after a lengthy ~~Zoom call~~ court hearing, with my brothers, our solicitor, and a judge. Going into what I thought would be a tick-box admin exercise triggered a range of feelings and memory jogs. Hearing the situation end-to-end from an earnest Judge was tough.
 
 Given his death certificate will be dated back to 2012, it somehow rewrites the last ten years. I’ve been dealing with a father who was missing, and now also one who had simultaneously passed away. It made me ponder how much a piece of paper can change things and how one person - the Judge in this case - can state such things as fact. Of course, nothing has really changed, but for many years I saw little value in processing the death using official means. I’d made up my mind about what happened, what more did I need. But I can truly say I’m glad we have done it and owe thanks to my brother for driving this forward.
 
