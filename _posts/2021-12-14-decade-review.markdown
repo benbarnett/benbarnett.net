@@ -27,7 +27,7 @@ How much has changed in ten years with the world and my life would be fun to exp
 - I’m still self employed. That’s been going on over 16 years now
 - I’ve stopped playing the drums but still hope to bring that back one day
 - Got really info fitness and did some triathlons. I’m not so into it right now, but will be again
-- Bought an electric car - you’d like it even though it doesn’t make the same noises. They’re better than the Gee-Wizz which you’d probably be imagining
+- Bought an electric car - you’d like it even though it doesn’t make the same noises. They’re better than the G-Wiz which you’d probably be imagining
 - Your mates still get in touch regularly to see if there’s any news
 - Occasionally I’ve struggled with this whole thing, but I’ve been fine overall. Its gone from anger to sadness to anger to something resembling acceptance
 
@@ -39,6 +39,8 @@ With the energy drain of the pandemic, processing Dad’s situation, not enough 
 
 I find that in times of stress its tricky to know if the sum total or single elements are causing the most drain. I do know that time off always helps clarify these things.
 
-So as a reminder to myself for the next ten years; recognise the difference between optional and necessary pressure. Take more time off, you idiot. Keep being thankful for your friendships and amazing family. Take it easier.
+So as a reminder to myself for the next ten years; recognise the difference between optional and necessary pressure. Take more time off, you idiot. Keep being thankful for your friendships and amazing family. 
+
+As Dad always said, take it easy.
 
 Happy new decade.
