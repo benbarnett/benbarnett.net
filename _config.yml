@@ -41,7 +41,7 @@ comments:
 analytics:
   provider: "google-gtag"
   google:
-    tracking_id: "UA-8825585-2"
+    tracking_id: "G-3KP9TD19MY"
     anonymize_ip: false # default
 
 defaults:
