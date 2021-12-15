@@ -38,6 +38,12 @@ comments:
   disqus:
     shortname: "benbarnett"
 
+analytics:
+  provider: "google-gtag"
+  google:
+    tracking_id: "UA-8825585-2"
+    anonymize_ip: false # default
+
 defaults:
   # _posts
   - scope:
