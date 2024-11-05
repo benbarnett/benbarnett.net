@@ -7,9 +7,9 @@ categories:
 
 Another eventful year trickles by. I enjoyed writing up my 'decade in review', but then did nothing similar to it for three years. Life is full of different challenges and _for sure_, writing out achievements and challenges are a useful strategy for reflection.
 
-One debate that I seem to continuously have with myself is whether I should stay broaden my skills, or stay specialised. In fact I’ve been pondering on this for over ten years. I found an illustration I made back in 2012 when I was considering going into management during my time as a team lead. Its clearly something that’s not fully settled in my mind.
+One debate that I seem to continuously have with myself is whether I should broaden my skills, or stay specialised. In fact I’ve been pondering on this for over ten years. I found an illustration I made back in 2012 when I was considering going into management during my time as a team lead. Its clearly something that’s not fully settled in my mind.
 
-Nice problem to have? Possibly yes. A deeply considered strategy, including reflection over what motivates and brings joy is _continuously_ worth doing. In fact I hope to use this post as means to do that.
+Nice problem to have? Possibly yes. A deeply considered strategy, including reflection over what motivates and brings joy is _continuously_ worth doing. In fact I hope to use this post as means to do that. I can figure out the how I get there later.
 
 It reminds me of the [Hedgehog Concept by Jim Collins](https://medium.com/@slowwco/ikigai-vs-the-hedgehog-concept-by-jim-collins-the-same-or-different-420d3191b7be). Finding the intersection of:
 
@@ -20,7 +20,7 @@ It reminds me of the [Hedgehog Concept by Jim Collins](https://medium.com/@sloww
 
 ## On skill oscillation
 
-I’ve been feeling this particularly recently. Traditionally I’ve been a very focused individual and enjoyed confidence in either my practice, or my ability to pick up new aspects.
+I’ve been feeling this particularly recently. Traditionally I’ve been a very focused individual and enjoyed confidence in either my practice, or my ability to self teach.
 
 However, there is a point where there isn’t the capacity to maintain it. Childcare, increased responsibility across the whole equilibrium of life makes this particularly challenging.
 
@@ -37,7 +37,7 @@ All of these could’ve been written in any order and are regularly going back &
 
 So, they oscillate! And what else oscillates? Sound. And what do I do? Tech. And so we find an intersection.
 
-## Sound
+## Sound
 
 A straight line is direct and efficient. It is also not the most scenic path through life. Though of course not actually a sound wave, we often see straight lines associated next to some very sad events next to hospital beds, and hear the incessent, unwavering single sound that is represented.
 
